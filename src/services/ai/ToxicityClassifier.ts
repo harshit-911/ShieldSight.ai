@@ -52,7 +52,7 @@ export class ToxicityClassifier implements TextClassifier {
     const hateRegex = /\b(nigger|faggot|retard|chink|kike|spic|racist|supremacist)[a-z]*\b/i;
     const sexualRegex = /\b(porn|pornography|sex|sexual|erotic|orgasm|explicit|cum|intercourse)[a-z]*\b/i;
     const harassmentRegex = /\b(harass|stalk|dox|ugly|worthless|idiot|stupid|trash)[a-z]*\b/i;
-    const abusiveRegex = /\b(bitch|bastard|asshole|fuck|shit|cunt|dick)[a-z]*\b/i;
+    const abusiveRegex = /\b(bitch|bastard|asshole|fuck|shit|cunt|dick|cock)[a-z]*\b/i;
     const groomingRegex = /\b(meet me|secret|don't tell|send (pics?|photos?)|how old (are you|r u))\b/i;
 
     let detectedLabel: ToxicityLabel = 'SAFE';

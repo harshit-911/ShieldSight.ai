@@ -90,7 +90,10 @@ export class ViolenceClassifier implements ImageClassifier {
     const session = await this.loader.loadModel();
 
     // 2. Preprocess image into Float32Array
-    const rawTensor = await ImagePreprocessor.preprocessUrl(image.src);
+    if (image.element && !image.element.src && image.src) {
+      image.element.src = image.src;
+    }
+    const rawTensor = await ImagePreprocessor.preprocessImageElement(image.element);
 
     // 3. Format input tensor into NCHW [1, 3, 224, 224] for model architecture
     const nchwData = new Float32Array(1 * 3 * 224 * 224);

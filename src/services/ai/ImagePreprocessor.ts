@@ -108,6 +108,53 @@ export class ImagePreprocessor {
   }
 
   /**
+   * Preprocesses an HTMLImageElement directly using canvas draw if possible.
+   * Completely avoids fetch network calls for blob:, data:, and same-origin URLs.
+   */
+  static async preprocessImageElement(
+    imgEl: HTMLImageElement,
+    options: PreprocessOptions = DEFAULT_PREPROCESS_OPTIONS
+  ): Promise<Float32Array> {
+    const src = imgEl.src || imgEl.currentSrc || '';
+    if (!src || ImagePreprocessor.isCrossOrigin(src)) {
+      return ImagePreprocessor.preprocessUrl(src, options);
+    }
+
+    const { targetWidth, targetHeight, mean } = options;
+    const bMean = mean ? mean[0] : 104.00698793;
+    const gMean = mean ? mean[1] : 116.66876762;
+    const rMean = mean ? mean[2] : 122.67891434;
+
+    const tensorSize = targetWidth * targetHeight * 3;
+    const tensorData = new Float32Array(tensorSize);
+
+    try {
+      if (typeof document !== 'undefined' && document.createElement) {
+        const canvas = document.createElement('canvas');
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(imgEl, 0, 0, targetWidth, targetHeight);
+          const data = ctx.getImageData(0, 0, targetWidth, targetHeight).data;
+          let tensorIdx = 0;
+          for (let i = 0; i < data.length; i += 4) {
+            tensorData[tensorIdx] = data[i + 2] - bMean;
+            tensorData[tensorIdx + 1] = data[i + 1] - gMean;
+            tensorData[tensorIdx + 2] = data[i] - rMean;
+            tensorIdx += 3;
+          }
+          return tensorData;
+        }
+      }
+    } catch {
+      // SecurityError (CORS tainted canvas) -> Fallback to URL fetch pipeline
+    }
+
+    return ImagePreprocessor.preprocessUrl(imgEl.src || imgEl.currentSrc, options);
+  }
+
+  /**
    * Fallback data URI processor for inline data URIs.
    */
   private static preprocessDataUrl(
@@ -145,5 +192,21 @@ export class ImagePreprocessor {
       tensorData.fill(0.0);
     }
     return tensorData;
+  }
+
+  private static isCrossOrigin(url: string): boolean {
+    if (!url) return false;
+    if (url.startsWith('data:') || url.startsWith('blob:') || url.startsWith('/')) {
+      return false;
+    }
+    try {
+      const parsed = new URL(url);
+      if (typeof window !== 'undefined' && window.location) {
+        return parsed.origin !== window.location.origin;
+      }
+      return false;
+    } catch {
+      return false;
+    }
   }
 }
