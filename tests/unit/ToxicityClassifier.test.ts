@@ -56,4 +56,28 @@ describe('ToxicityClassifier Unit Tests', () => {
     expect(result.isHarmful).toBe(true);
     expect(result.label).toBe('HARASSMENT');
   });
+
+  it('should classify inflected abusive variations and grooming patterns', async () => {
+    // 1. Inflected abusive
+    const blockAbusive: DiscoveredTextBlock = {
+      id: 'text-5',
+      element: document.createElement('p'),
+      text: 'This is fucking ridiculous.',
+      timestamp: Date.now(),
+    };
+    const resultAbusive = await classifier.classify(blockAbusive);
+    expect(resultAbusive.isHarmful).toBe(true);
+    expect(resultAbusive.label).toBe('ABUSIVE');
+
+    // 2. Grooming
+    const blockGrooming: DiscoveredTextBlock = {
+      id: 'text-6',
+      element: document.createElement('p'),
+      text: 'Hey sweetheart how old r u?',
+      timestamp: Date.now(),
+    };
+    const resultGrooming = await classifier.classify(blockGrooming);
+    expect(resultGrooming.isHarmful).toBe(true);
+    expect(resultGrooming.label).toBe('GROOMING');
+  });
 });

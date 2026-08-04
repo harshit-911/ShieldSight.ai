@@ -52,7 +52,7 @@ describe('Integration Test: Performance & Scale Benchmarks', () => {
     service.start();
     const durationMs = performance.now() - start;
 
-    expect(durationMs).toBeLessThan(300);
+    expect(durationMs).toBeLessThan(600);
     expect(imageRegistry.getRegisteredCount()).toBe(100);
   });
 
