@@ -31,6 +31,7 @@ class ContentProtectionEngine {
   private isPresentationMode: boolean = false;
   private unsubscribeImageDiscovery: (() => void) | null = null;
   private unsubscribeImageQueueCompleted: (() => void) | null = null;
+  private unsubscribeImageQueueFailed: (() => void) | null = null;
   private unsubscribeTextDiscovery: (() => void) | null = null;
   private unsubscribeTextQueueCompleted: (() => void) | null = null;
 
@@ -155,6 +156,25 @@ class ContentProtectionEngine {
           const duration = event.job.endTime ? event.job.endTime - (event.job.startTime || Date.now()) : 50;
 
           storageService.recordClassification(nsfwBlocked, graphicBlocked, duration);
+        }
+      });
+    }
+
+    if (!this.unsubscribeImageQueueFailed) {
+      this.unsubscribeImageQueueFailed = imageProcessingQueue.on('JOB_FAILED', (event) => {
+        if (event.job) {
+          console.warn(`[ShieldSight Content] Job failed for image ${event.job.image.id}. Removing scanning overlay.`);
+          protectionService.protect(event.job.image, {
+            imageId: event.job.image.id,
+            isHarmful: false,
+            nsfw: { probability: 0, label: 'SAFE' },
+            violence: { probability: 0, label: 'SAFE' },
+            overallDecision: 'SAFE',
+            results: {},
+            label: 'SAFE',
+            confidence: 0,
+            timestamp: Date.now(),
+          });
         }
       });
     }
@@ -387,6 +407,11 @@ class ContentProtectionEngine {
     if (this.unsubscribeImageQueueCompleted) {
       this.unsubscribeImageQueueCompleted();
       this.unsubscribeImageQueueCompleted = null;
+    }
+
+    if (this.unsubscribeImageQueueFailed) {
+      this.unsubscribeImageQueueFailed();
+      this.unsubscribeImageQueueFailed = null;
     }
 
     if (this.unsubscribeTextDiscovery) {

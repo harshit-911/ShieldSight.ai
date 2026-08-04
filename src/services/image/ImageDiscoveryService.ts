@@ -232,6 +232,12 @@ export class ImageDiscoveryService {
       return;
     }
 
+    // 2.5 Check layout dimensions to skip tiny thumbnails/avatars/icons
+    const rect = img.getBoundingClientRect();
+    if (rect.width > 0 && rect.width < 64 && rect.height > 0 && rect.height < 64) {
+      return;
+    }
+
     // 3. Check layout visibility
     if (!isElementVisible(img)) {
       return;
