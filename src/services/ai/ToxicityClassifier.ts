@@ -49,10 +49,10 @@ export class ToxicityClassifier implements TextClassifier {
 
     // Keyword & Semantic Pattern Heuristics (allowing word inflections and suffixes)
     const threatRegex = /\b(kill|murder|slaughter|die|dying|dead|stab|shoot|shot|bomb|attack|execute)[a-z]*\b/i;
-    const hateRegex = /\b(nigger|faggot|retard|chink|kike|spic|racist|supremacist)[a-z]*\b/i;
+    const hateRegex = /\b(nigger|nigga|faggot|retard|chink|kike|spic|racist|supremacist)[a-z]*\b/i;
     const sexualRegex = /\b(porn|pornography|sex|sexual|erotic|orgasm|explicit|cum|intercourse)[a-z]*\b/i;
     const harassmentRegex = /\b(harass|stalk|dox|ugly|worthless|idiot|stupid|trash)[a-z]*\b/i;
-    const abusiveRegex = /\b(bitch|bastard|asshole|fuck|shit|cunt|dick|cock)[a-z]*\b/i;
+    const abusiveRegex = /\b(bitch|bastard|asshole|fuck|motherfuck|shit|cunt|dick)[a-z]*\b/i;
     const groomingRegex = /\b(meet me|secret|don't tell|send (pics?|photos?)|how old (are you|r u))\b/i;
 
     let detectedLabel: ToxicityLabel = 'SAFE';

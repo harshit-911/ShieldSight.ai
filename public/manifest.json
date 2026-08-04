@@ -42,7 +42,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "models/*"
+        "models/*",
+        "tessdata/*"
       ],
       "matches": [
         "<all_urls>"

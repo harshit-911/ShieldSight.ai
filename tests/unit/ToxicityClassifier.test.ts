@@ -79,5 +79,16 @@ describe('ToxicityClassifier Unit Tests', () => {
     const resultGrooming = await classifier.classify(blockGrooming);
     expect(resultGrooming.isHarmful).toBe(true);
     expect(resultGrooming.label).toBe('GROOMING');
+
+    // 3. Explicit song words (nigga, motherfucking)
+    const blockSong: DiscoveredTextBlock = {
+      id: 'text-7',
+      element: document.createElement('p'),
+      text: 'A young nigga got it bad cause of motherfucking rules.',
+      timestamp: Date.now(),
+    };
+    const resultSong = await classifier.classify(blockSong);
+    expect(resultSong.isHarmful).toBe(true);
+    expect(resultSong.label).toBe('HATE');
   });
 });

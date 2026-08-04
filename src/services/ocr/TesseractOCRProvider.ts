@@ -55,8 +55,15 @@ export class TesseractOCRProvider implements OCRProvider {
 
     if (!this.workerInitPromise) {
       this.workerInitPromise = (async () => {
-        logger.info('[ShieldSight OCR] Initializing Local Tesseract.js WASM Worker...');
-        const worker = await createWorker('eng');
+        const langPath = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL
+          ? chrome.runtime.getURL('tessdata')
+          : '/tessdata';
+
+        logger.info(`[ShieldSight OCR] Initializing Local Tesseract.js WASM Worker using langPath: ${langPath}...`);
+        const worker = await createWorker('eng', 1, {
+          langPath,
+          cacheMethod: 'none',
+        });
         this.worker = worker;
         logger.info('[ShieldSight OCR] Tesseract.js WASM Worker Initialized & Cached Successfully');
         return worker;
