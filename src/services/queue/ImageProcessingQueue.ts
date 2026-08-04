@@ -210,7 +210,14 @@ export class ImageProcessingQueue {
     this.emitEvent('JOB_STARTED', job);
 
     try {
-      const result: ClassificationResult = await this.classifier.classify(job.image);
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('AI Inference Timeout Safeguard (3.5s)')), 3500)
+      );
+
+      const result: ClassificationResult = await Promise.race([
+        this.classifier.classify(job.image),
+        timeoutPromise,
+      ]);
 
       job.status = 'completed';
       job.endTime = Date.now();

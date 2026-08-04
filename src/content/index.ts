@@ -102,7 +102,24 @@ class ContentProtectionEngine {
               const imgEl = entry.target as HTMLImageElement;
               const imageObj = this.observedImagesMap.get(imgEl);
               if (imageObj) {
-                imageProcessingQueue.enqueue(imageObj);
+                // Post-layout render size check: Skip tiny avatars and thumbnails instantly
+                const rect = imgEl.getBoundingClientRect();
+                if (rect.width > 0 && rect.width < 64 && rect.height > 0 && rect.height < 64) {
+                  // Safely unblur and remove scanning card immediately
+                  protectionService.protect(imageObj, {
+                    imageId: imageObj.id,
+                    isHarmful: false,
+                    nsfw: { probability: 0, label: 'SAFE' },
+                    violence: { probability: 0, label: 'SAFE' },
+                    overallDecision: 'SAFE',
+                    results: {},
+                    label: 'SAFE',
+                    confidence: 0,
+                    timestamp: Date.now(),
+                  });
+                } else {
+                  imageProcessingQueue.enqueue(imageObj);
+                }
                 this.observedImagesMap.delete(imgEl);
                 this.viewportObserver?.unobserve(imgEl);
               }
