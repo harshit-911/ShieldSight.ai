@@ -13,7 +13,8 @@ export interface ExtensionState {
 export type MessageType =
   | 'TOGGLE_PROTECTION'
   | 'GET_PROTECTION_STATUS'
-  | 'PROTECTION_STATUS_CHANGED';
+  | 'PROTECTION_STATUS_CHANGED'
+  | 'RUN_OCR';
 
 export interface BaseMessage {
   type: MessageType;
@@ -37,10 +38,18 @@ export interface ProtectionStatusChangedMessage extends BaseMessage {
   };
 }
 
+export interface RunOCRMessage extends BaseMessage {
+  type: 'RUN_OCR';
+  payload: {
+    dataUrl: string;
+  };
+}
+
 export type ExtensionMessage =
   | ToggleProtectionMessage
   | GetProtectionStatusMessage
-  | ProtectionStatusChangedMessage;
+  | ProtectionStatusChangedMessage
+  | RunOCRMessage;
 
 export interface StorageSchema {
   isProtectionEnabled: boolean;

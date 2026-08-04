@@ -111,25 +111,65 @@ export class TesseractOCRProvider implements OCRProvider {
     let boundingBoxes: OCRBoundingBox[] = [];
 
     try {
-      await this.initialize();
-      const worker = this.worker!;
-
       const canvas = await getCanvasFromImageUrl(image.element, Math.max(width, 224), Math.max(height, 224));
-      const recognizeResult = await worker.recognize(canvas as HTMLCanvasElement);
-      const data = recognizeResult.data as unknown as TesseractDataResult;
 
-      extractedText = cleanExtractedText(data.text || '');
-      confidencePct = data.confidence || 0;
+      if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+        logger.info(`[ShieldSight OCR] Delegating OCR task to Background Service Worker for: ${image.id}`);
+        const dataUrl = (canvas as HTMLCanvasElement).toDataURL('image/png');
 
-      if (data.words && Array.isArray(data.words)) {
-        boundingBoxes = data.words.map((w: TesseractWordItem) => ({
-          text: w.text || '',
-          x: w.bbox ? w.bbox.x0 : 0,
-          y: w.bbox ? w.bbox.y0 : 0,
-          width: w.bbox ? w.bbox.x1 - w.bbox.x0 : 0,
-          height: w.bbox ? w.bbox.y1 - w.bbox.y0 : 0,
-          confidence: Math.round((w.confidence || 0) * 10) / 10,
-        }));
+        const response = await new Promise<any>((resolve, reject) => {
+          chrome.runtime.sendMessage(
+            {
+              type: 'RUN_OCR',
+              payload: { dataUrl },
+            },
+            (res) => {
+              if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError.message));
+              } else if (res && res.error) {
+                reject(new Error(res.error));
+              } else {
+                resolve(res);
+              }
+            }
+          );
+        });
+
+        if (response) {
+          extractedText = cleanExtractedText(response.text || '');
+          confidencePct = response.confidence || 0;
+
+          if (response.words && Array.isArray(response.words)) {
+            boundingBoxes = response.words.map((w: any) => ({
+              text: w.text || '',
+              x: w.bbox ? w.bbox.x0 : 0,
+              y: w.bbox ? w.bbox.y0 : 0,
+              width: w.bbox ? w.bbox.x1 - w.bbox.x0 : 0,
+              height: w.bbox ? w.bbox.y1 - w.bbox.y0 : 0,
+              confidence: Math.round((w.confidence || 0) * 10) / 10,
+            }));
+          }
+        }
+      } else {
+        // Fallback for tests/environments where chrome extension runtime is unavailable
+        await this.initialize();
+        const worker = this.worker!;
+        const recognizeResult = await worker.recognize(canvas as HTMLCanvasElement);
+        const data = recognizeResult.data as unknown as TesseractDataResult;
+
+        extractedText = cleanExtractedText(data.text || '');
+        confidencePct = data.confidence || 0;
+
+        if (data.words && Array.isArray(data.words)) {
+          boundingBoxes = data.words.map((w: TesseractWordItem) => ({
+            text: w.text || '',
+            x: w.bbox ? w.bbox.x0 : 0,
+            y: w.bbox ? w.bbox.y0 : 0,
+            width: w.bbox ? w.bbox.x1 - w.bbox.x0 : 0,
+            height: w.bbox ? w.bbox.y1 - w.bbox.y0 : 0,
+            confidence: Math.round((w.confidence || 0) * 10) / 10,
+          }));
+        }
       }
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : String(err);
