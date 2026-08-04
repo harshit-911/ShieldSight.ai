@@ -53,10 +53,11 @@ export default defineConfig({
       input: {
         popup: resolve(__dirname, 'index.html'),
         background: resolve(__dirname, 'src/background/index.ts'),
+        offscreen: resolve(__dirname, 'src/offscreen/index.ts'),
       },
       output: {
         entryFileNames: (chunkInfo) => {
-          if (chunkInfo.name === 'background') {
+          if (chunkInfo.name === 'background' || chunkInfo.name === 'offscreen') {
             return '[name].js';
           }
           return 'assets/[name]-[hash].js';

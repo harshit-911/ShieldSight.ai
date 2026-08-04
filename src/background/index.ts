@@ -1,12 +1,11 @@
 /**
  * ShieldSight AI - Background Service Worker
  * Manifest V3 Service Worker managing background lifecycle and extension state events.
- * Handles Tesseract OCR requests inside extension context to bypass webpage CSP network restrictions.
+ * Spawns and delegates heavy OCR tasks to the Offscreen Document context to bypass MV3 Service Worker limitations.
  */
 
 import { storageService } from '../services/storage';
 import { DEFAULT_SETTINGS } from '../utils/constants';
-import { createWorker } from 'tesseract.js';
 
 console.log('[ShieldSight AI] Background Service Worker Initialized');
 
@@ -18,36 +17,45 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   }
 });
 
-// Run OCR recognition inside background worker (extension origin)
-async function runOCRBackground(dataUrl: string): Promise<any> {
-  const langPath = chrome.runtime.getURL('tessdata');
-  console.log(`[ShieldSight Background OCR] Initializing worker using langPath: ${langPath}`);
-  
-  const worker = await createWorker('eng', 1, {
-    langPath,
-    cacheMethod: 'none',
-  });
-
-  try {
-    const recognizeResult = await worker.recognize(dataUrl) as any;
-    const data = recognizeResult.data;
-    await worker.terminate();
-    return {
-      text: data.text,
-      confidence: data.confidence,
-      words: data.words ? data.words.map((w: any) => ({
-        text: w.text,
-        confidence: w.confidence,
-        bbox: w.bbox,
-      })) : [],
-    };
-  } catch (err) {
-    await worker.terminate();
-    throw err;
+// Helper to ensure Offscreen Document is instantiated
+async function createOffscreenDocument(): Promise<void> {
+  // Fallback hasDocument check
+  if (await chrome.offscreen.hasDocument()) {
+    return;
   }
+
+  console.log('[ShieldSight Background] Creating Offscreen Document for OCR tasks...');
+  await chrome.offscreen.createDocument({
+    url: 'offscreen.html',
+    reasons: [chrome.offscreen.Reason.DOM_PARSER],
+    justification: 'Run Tesseract OCR engine in DOM context with Web Workers support',
+  });
 }
 
-// Handle incoming messages from popup or content scripts
+// Proxies OCR request to Offscreen Document DOM context
+async function runOCROffscreenViaDocument(dataUrl: string): Promise<any> {
+  await createOffscreenDocument();
+
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage(
+      {
+        type: 'RUN_OCR_OFFSCREEN',
+        payload: { dataUrl },
+      },
+      (res) => {
+        if (chrome.runtime.lastError) {
+          reject(new Error(chrome.runtime.lastError.message));
+        } else if (res && res.error) {
+          reject(new Error(res.error));
+        } else {
+          resolve(res);
+        }
+      }
+    );
+  });
+}
+
+// Handle incoming messages from popup, content scripts, or offscreen document
 chrome.runtime.onMessage.addListener(
   (
     message: any,
@@ -71,12 +79,12 @@ chrome.runtime.onMessage.addListener(
 
       case 'RUN_OCR':
         if (message.payload && message.payload.dataUrl) {
-          runOCRBackground(message.payload.dataUrl)
+          runOCROffscreenViaDocument(message.payload.dataUrl)
             .then((res) => {
               sendResponse(res);
             })
             .catch((err) => {
-              console.error('[ShieldSight Background OCR] Error:', err);
+              console.error('[ShieldSight Background OCR Proxy] Error:', err);
               sendResponse({ error: err.message || String(err) });
             });
           return true; // Keep channel open for async response
