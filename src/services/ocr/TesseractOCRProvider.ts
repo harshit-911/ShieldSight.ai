@@ -107,7 +107,7 @@ export class TesseractOCRProvider implements OCRProvider {
       await this.initialize();
       const worker = this.worker!;
 
-      const canvas = await getCanvasFromImageUrl(image.src, Math.max(width, 224), Math.max(height, 224));
+      const canvas = await getCanvasFromImageUrl(image.element, Math.max(width, 224), Math.max(height, 224));
       const recognizeResult = await worker.recognize(canvas as HTMLCanvasElement);
       const data = recognizeResult.data as unknown as TesseractDataResult;
 

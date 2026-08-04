@@ -15,15 +15,31 @@ export function cleanExtractedText(rawText: string): string {
 }
 
 /**
- * Converts image URL into untainted OffscreenCanvas or HTMLCanvasElement for OCR processing.
+ * Converts image element into untainted OffscreenCanvas or HTMLCanvasElement for OCR processing.
  */
-export async function getCanvasFromImageUrl(_src: string, targetWidth = 300, targetHeight = 300): Promise<HTMLCanvasElement | OffscreenCanvas> {
+export async function getCanvasFromImageUrl(imgEl: HTMLImageElement, targetWidth = 300, targetHeight = 300): Promise<HTMLCanvasElement | OffscreenCanvas> {
   if (typeof OffscreenCanvas !== 'undefined') {
     const canvas = new OffscreenCanvas(targetWidth, targetHeight);
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      try {
+        ctx.drawImage(imgEl, 0, 0, targetWidth, targetHeight);
+      } catch (err) {
+        console.warn('[ShieldSight OCR] Failed to draw image to OffscreenCanvas:', err);
+      }
+    }
     return canvas;
   }
   const canvas = document.createElement('canvas');
   canvas.width = targetWidth;
   canvas.height = targetHeight;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    try {
+      ctx.drawImage(imgEl, 0, 0, targetWidth, targetHeight);
+    } catch (err) {
+      console.warn('[ShieldSight OCR] Failed to draw image to HTMLCanvas:', err);
+    }
+  }
   return canvas;
 }
