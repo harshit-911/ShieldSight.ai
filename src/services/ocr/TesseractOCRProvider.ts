@@ -58,10 +58,18 @@ export class TesseractOCRProvider implements OCRProvider {
         const langPath = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL
           ? chrome.runtime.getURL('tessdata')
           : '/tessdata';
+        const workerPath = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL
+          ? chrome.runtime.getURL('lib/tesseract/worker.min.js')
+          : undefined;
+        const corePath = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL
+          ? chrome.runtime.getURL('lib/tesseract/tesseract-core.wasm.js')
+          : undefined;
 
         logger.info(`[ShieldSight OCR] Initializing Local Tesseract.js WASM Worker using langPath: ${langPath}...`);
         const worker = await createWorker('eng', 1, {
           langPath,
+          workerPath,
+          corePath,
           cacheMethod: 'none',
         });
         this.worker = worker;

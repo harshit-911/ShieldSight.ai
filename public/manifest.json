@@ -5,7 +5,8 @@
   "description": "AI-powered Chrome Extension that helps protect users from harmful visual content on the internet.",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "offscreen"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -43,7 +44,8 @@
     {
       "resources": [
         "models/*",
-        "tessdata/*"
+        "tessdata/*",
+        "lib/tesseract/*"
       ],
       "matches": [
         "<all_urls>"

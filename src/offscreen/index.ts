@@ -10,10 +10,15 @@ console.log('[ShieldSight Offscreen] Offscreen Document initialized');
 // Run OCR inside the DOM context
 async function runOCROffscreen(dataUrl: string): Promise<any> {
   const langPath = chrome.runtime.getURL('tessdata');
-  console.log(`[ShieldSight Offscreen OCR] Running OCR with langPath: ${langPath}`);
+  const workerPath = chrome.runtime.getURL('lib/tesseract/worker.min.js');
+  const corePath = chrome.runtime.getURL('lib/tesseract/tesseract-core.wasm.js');
+
+  console.log(`[ShieldSight Offscreen OCR] Running OCR with local assets: langPath=${langPath}, workerPath=${workerPath}, corePath=${corePath}`);
 
   const worker = await createWorker('eng', 1, {
     langPath,
+    workerPath,
+    corePath,
     cacheMethod: 'none',
   });
 
