@@ -1,6 +1,8 @@
 /**
  * ShieldSight AI - Conversation Platform Adapters
  * Implements WhatsAppWebAdapter and GenericConversationAdapter.
+ * High Resilience: Uses data-id heuristics (true_/false_ prefix) and class name patterns
+ * to reliably intercept WhatsApp Web messages across active updates.
  */
 
 import { ConversationAdapter, MessageElement } from './ConversationTypes';
@@ -28,11 +30,12 @@ export class WhatsAppWebAdapter implements ConversationAdapter {
   async discoverMessages(root: HTMLElement = document.body): Promise<MessageElement[]> {
     const messages: MessageElement[] = [];
 
-    // WhatsApp Web bubble classes
-    const inBubbles = root.querySelectorAll('.message-in');
-    const outBubbles = root.querySelectorAll('.message-out');
+    // WhatsApp Web bubble selectors (including partial class patterns & data-id triggers)
+    const bubbles = root.querySelectorAll(
+      '.message-in, .message-out, [class*="message-in"], [class*="message-out"], [data-id^="true_"], [data-id^="false_"]'
+    );
 
-    const processBubble = (el: Element, sender: 'incoming' | 'outgoing') => {
+    bubbles.forEach((el) => {
       if (!(el instanceof HTMLElement)) return;
 
       // Ignore deleted, status updates, or system elements by searching keywords
@@ -45,14 +48,28 @@ export class WhatsAppWebAdapter implements ConversationAdapter {
         return;
       }
 
-      // Read copyable text wrapper
-      const textEl = el.querySelector('.copyable-text span') as HTMLElement || el.querySelector('.selectable-text') as HTMLElement;
+      // Determine sender: true_ prefix in data-id or class match
+      let sender: 'incoming' | 'outgoing' = 'incoming';
+      const dataId = el.getAttribute('data-id') || '';
+      const classStr = el.className.toLowerCase();
+
+      if (dataId.startsWith('true_') || classStr.includes('message-out')) {
+        sender = 'outgoing';
+      }
+
+      // Read copyable text wrapper or text span (extremely robust fallbacks)
+      const textEl = 
+        el.querySelector('.copyable-text span') as HTMLElement || 
+        el.querySelector('.selectable-text') as HTMLElement ||
+        el.querySelector('span[dir="ltr"]') as HTMLElement ||
+        el.querySelector('span') as HTMLElement;
+
       if (!textEl) return;
 
       const text = (textEl.textContent || '').trim();
-      if (!text) return;
+      if (!text || text.length > 2000) return; // Skip noise / large segments
 
-      const idAttr = el.getAttribute('data-id') || generateMessageId(text, Date.now(), sender);
+      const idAttr = dataId || generateMessageId(text, Date.now(), sender);
 
       messages.push({
         id: idAttr,
@@ -63,10 +80,7 @@ export class WhatsAppWebAdapter implements ConversationAdapter {
         element: textEl,
         status: 'pending',
       });
-    };
-
-    inBubbles.forEach((el) => processBubble(el, 'incoming'));
-    outBubbles.forEach((el) => processBubble(el, 'outgoing'));
+    });
 
     return messages;
   }
