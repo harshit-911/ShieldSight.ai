@@ -4,6 +4,30 @@ import { AIOrchestrator } from '../../src/services/ai/AIOrchestrator';
 import { ImageClassifier } from '../../src/services/ai/ImageClassifier';
 import { DiscoveredImage } from '../../src/types';
 
+vi.mock('../../src/services/ocr/OCRService', () => ({
+  ocrService: {
+    initialize: vi.fn().mockResolvedValue(undefined),
+    recognizeImage: vi.fn().mockResolvedValue({
+      imageId: 'img-1',
+      extractedText: '',
+      confidence: 0,
+      words: [],
+      inferenceTimeMs: 10,
+      timestamp: Date.now(),
+    }),
+  },
+}));
+
+vi.mock('../../src/services/ai/ToxicityClassifier', () => ({
+  toxicityClassifier: {
+    classify: vi.fn().mockResolvedValue({
+      label: 'SAFE',
+      confidence: 0.1,
+      isHarmful: false,
+    }),
+  },
+}));
+
 describe('DecisionEngine Unit Tests', () => {
   it('should evaluate SAFE when both classifiers return SAFE', () => {
     const decision = DecisionEngine.evaluateDecision('SAFE', 'SAFE');

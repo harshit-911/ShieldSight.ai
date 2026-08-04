@@ -112,7 +112,7 @@ export class ProtectionService {
     imgEl.classList.remove('shieldsight-pre-blur');
     imgEl.classList.add('shieldsight-blurred-image');
 
-    const reasonText = this.formatReasonText(overallDecision);
+    const reasonText = this.formatReasonText(overallDecision, result);
 
     logger.styled(
       '[ShieldSight Protection]',
@@ -342,7 +342,10 @@ export class ProtectionService {
     this.activeOverlays.set(image.id, overlay);
   }
 
-  private formatReasonText(decision: OverallDecision): string {
+  private formatReasonText(decision: OverallDecision, result?: CombinedClassificationResult): string {
+    if (result && result.textBlocked) {
+      return 'Harmful Language';
+    }
     switch (decision) {
       case 'NSFW':
         return 'Adult Content';

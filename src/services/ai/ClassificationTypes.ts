@@ -4,6 +4,7 @@
  */
 
 import { ClassificationResult } from '../../types/queue';
+import { ToxicityLabel } from '../../types/text';
 
 export type NSFWLabel = 'SAFE' | 'NSFW';
 export type ViolenceLabel = 'SAFE' | 'GRAPHIC';
@@ -39,6 +40,9 @@ export interface CombinedClassificationResult extends ClassificationResult {
   overallDecision: OverallDecision;
   /** Detailed breakdown of all individual classifier results */
   results: Record<string, ClassificationResult>;
+  textBlocked?: boolean;
+  ocrText?: string;
+  textLabel?: ToxicityLabel;
 }
 
 /** Configuration options for image preprocessing */

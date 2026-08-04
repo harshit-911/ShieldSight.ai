@@ -3,6 +3,7 @@
  * Orchestrates parallel execution across multiple independent AI classifiers,
  * gathers individual results, evaluates overall decisions via DecisionEngine,
  * and formats combined classification records.
+ * Integrates Tesseract OCR and Toxicity classification synchronously inside the pipeline to prevent FOUC.
  */
 
 import { DiscoveredImage } from '../../types';
@@ -19,6 +20,9 @@ import {
   ViolenceLabel,
 } from './ClassificationTypes';
 import { pipelineAuditTracker } from '../audit/PipelineAuditTracker';
+import { ocrService } from '../ocr/OCRService';
+import { toxicityClassifier } from './ToxicityClassifier';
+import { ToxicityLabel } from '../../types/text';
 
 export class AIOrchestrator implements IImageClassifier {
   readonly id: string = 'ai-orchestrator-v1';
@@ -50,21 +54,24 @@ export class AIOrchestrator implements IImageClassifier {
     }
     console.log('[ShieldSight Orchestrator] Initializing all AI classifiers in parallel...');
     
-    await Promise.all(
-      this.classifiers.map((classifier) =>
+    await Promise.all([
+      ...this.classifiers.map((classifier) =>
         classifier.initialize().catch((err) => {
           console.warn(`[ShieldSight Orchestrator] Initialization error for ${classifier.name}:`, err);
         })
-      )
-    );
+      ),
+      ocrService.initialize().catch((err) => {
+        console.warn('[ShieldSight Orchestrator] Initialization error for OCR Service:', err);
+      })
+    ]);
 
     this.isInitialized = true;
-    console.log('[ShieldSight Orchestrator] All AI classifiers initialized successfully');
+    console.log('[ShieldSight Orchestrator] All AI classifiers and OCR initialized successfully');
   }
 
   /**
-   * Executes all registered AI classifiers in parallel on a discovered image,
-   * gathers individual results, and evaluates overall decision.
+   * Executes all registered AI classifiers and Tesseract OCR in parallel on a discovered image,
+   * evaluates toxicity on any extracted embedded texts, and resolves the overall combined decision.
    */
   async classify(image: DiscoveredImage): Promise<CombinedClassificationResult> {
     if (!this.isInitialized) {
@@ -73,17 +80,23 @@ export class AIOrchestrator implements IImageClassifier {
 
     const overallStart = performance.now();
 
-    // 1. Run all registered classifiers in parallel
-    const rawResults = await Promise.all(
-      this.classifiers.map(async (classifier) => {
-        try {
-          const res = await classifier.classify(image);
-          return { classifier, res, error: null };
-        } catch (error) {
-          return { classifier, res: null, error };
-        }
-      })
-    );
+    // 1. Run all registered classifiers and Tesseract OCR in parallel
+    const [rawResults, ocrRes] = await Promise.all([
+      Promise.all(
+        this.classifiers.map(async (classifier) => {
+          try {
+            const res = await classifier.classify(image);
+            return { classifier, res, error: null };
+          } catch (error) {
+            return { classifier, res: null, error };
+          }
+        })
+      ),
+      ocrService.recognizeImage(image).catch((err) => {
+        console.warn(`[ShieldSight Orchestrator] OCR check failed for ${image.id}:`, err);
+        return null;
+      }),
+    ]);
 
     const resultMap: Record<string, any> = {};
     let nsfwProbability = 0.0;
@@ -91,7 +104,7 @@ export class AIOrchestrator implements IImageClassifier {
     let violenceProbability = 0.0;
     let violenceLabel: ViolenceLabel = 'SAFE';
 
-    // 2. Extract individual results
+    // 2. Extract image classifier results
     rawResults.forEach(({ classifier, res }) => {
       if (res) {
         resultMap[classifier.id] = res;
@@ -107,8 +120,37 @@ export class AIOrchestrator implements IImageClassifier {
         }
       }
     });
-    // 3. Compute overall decision via DecisionEngine
-    const overallDecision = DecisionEngine.evaluateDecision(nsfwLabel, violenceLabel);
+
+    // 3. Evaluate OCR extracted text toxicity
+    let textBlocked = false;
+    let textLabel: ToxicityLabel = 'SAFE';
+    let textConfidence = 0.0;
+    const ocrText = ocrRes?.extractedText || '';
+
+    if (ocrText && ocrText.length >= 5) {
+      try {
+        const toxResult = await toxicityClassifier.classify({
+          id: `ocr-text-${image.id}`,
+          text: ocrText,
+          element: image.element,
+          timestamp: Date.now(),
+        });
+        textLabel = toxResult.label;
+        textConfidence = toxResult.confidence;
+        if (toxResult.isHarmful && toxResult.label !== 'SAFE') {
+          textBlocked = true;
+        }
+      } catch (err) {
+        console.warn(`[ShieldSight Orchestrator] Toxicity evaluation on OCR text failed for ${image.id}:`, err);
+      }
+    }
+
+    // 4. Compute overall decision via DecisionEngine (elevating to blocked if image text is toxic)
+    let overallDecision = DecisionEngine.evaluateDecision(nsfwLabel, violenceLabel);
+    if (overallDecision === 'SAFE' && textBlocked) {
+      overallDecision = 'BOTH';
+    }
+
     const totalDurationMs = Math.round(performance.now() - overallStart);
 
     // Audit Logging Stages 4, 5, 6, 7
@@ -133,11 +175,14 @@ export class AIOrchestrator implements IImageClassifier {
       overallDecision,
       results: resultMap,
       label: overallDecision,
-      confidence: Math.max(nsfwProbability, violenceProbability, 0.95),
+      confidence: Math.max(nsfwProbability, violenceProbability, textConfidence, 0.95),
       timestamp: Date.now(),
+      textBlocked,
+      ocrText,
+      textLabel,
     };
 
-    // 4. Log detailed structured report
+    // 5. Log detailed structured report
     this.logOrchestrationReport(image, combinedResult, rawResults, totalDurationMs);
 
     return combinedResult;
@@ -172,6 +217,12 @@ export class AIOrchestrator implements IImageClassifier {
         console.warn(`• ${classifier.name} | Error: ${error.message}`);
       }
     });
+
+    if (combined.ocrText) {
+      console.log(
+        `• OCR Extracted Text: "${combined.ocrText}" | Classification: ${combined.textLabel} | Blocked: ${combined.textBlocked}`
+      );
+    }
 
     console.log(`▸ Final Combined Decision: %c${combined.overallDecision}`, decisionColor);
     console.groupEnd();
