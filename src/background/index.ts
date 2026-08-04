@@ -32,27 +32,40 @@ async function createOffscreenDocument(): Promise<void> {
   });
 }
 
-// Proxies OCR request to Offscreen Document DOM context
+// Proxies OCR request to Offscreen Document DOM context (with retry loop to prevent race conditions during startup)
 async function runOCROffscreenViaDocument(dataUrl: string): Promise<any> {
   await createOffscreenDocument();
 
-  return new Promise((resolve, reject) => {
-    chrome.runtime.sendMessage(
-      {
-        type: 'RUN_OCR_OFFSCREEN',
-        payload: { dataUrl },
-      },
-      (res) => {
-        if (chrome.runtime.lastError) {
-          reject(new Error(chrome.runtime.lastError.message));
-        } else if (res && res.error) {
-          reject(new Error(res.error));
-        } else {
-          resolve(res);
-        }
+  for (let i = 0; i < 6; i++) {
+    try {
+      const res = await new Promise<any>((resolve, reject) => {
+        chrome.runtime.sendMessage(
+          {
+            type: 'RUN_OCR_OFFSCREEN',
+            payload: { dataUrl },
+          },
+          (res) => {
+            if (chrome.runtime.lastError) {
+              reject(new Error(chrome.runtime.lastError.message));
+            } else {
+              resolve(res);
+            }
+          }
+        );
+      });
+      if (res && res.error) {
+        throw new Error(res.error);
       }
-    );
-  });
+      return res;
+    } catch (err) {
+      console.warn(`[ShieldSight Background OCR Proxy] Attempt ${i + 1} failed:`, err);
+      if (i === 5) {
+        throw err;
+      }
+      // Delay before next attempt to allow Offscreen Document loading to complete
+      await new Promise((r) => setTimeout(r, 200));
+    }
+  }
 }
 
 // Handle incoming messages from popup, content scripts, or offscreen document
