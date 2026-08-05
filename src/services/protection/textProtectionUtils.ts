@@ -14,6 +14,7 @@ export function ensureTextProtectionStyles(): void {
   styleEl.textContent = `
     /* Text Blur Styling */
     .shieldsight-blurred-text {
+      display: inline-block !important;
       filter: blur(8px) !important;
       user-select: none !important;
       pointer-events: none !important;

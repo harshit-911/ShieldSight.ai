@@ -32,7 +32,7 @@ export class WhatsAppWebAdapter implements ConversationAdapter {
 
     // WhatsApp Web bubble selectors (including partial class patterns & data-id triggers)
     const bubbles = root.querySelectorAll(
-      '.message-in, .message-out, [class*="message-in"], [class*="message-out"], [data-id^="true_"], [data-id^="false_"]'
+      '.message-in, .message-out, [class*="message-in"], [class*="message-out"], [data-id^="true_"], [data-id^="false_"], [data-id*="@c.us"], [data-id*="@g.us"], div[role="row"], div[tabindex="-1"]'
     );
 
     bubbles.forEach((el) => {
@@ -62,7 +62,9 @@ export class WhatsAppWebAdapter implements ConversationAdapter {
         el.querySelector('.copyable-text span') as HTMLElement || 
         el.querySelector('.selectable-text') as HTMLElement ||
         el.querySelector('span[dir="ltr"]') as HTMLElement ||
-        el.querySelector('span') as HTMLElement;
+        el.querySelector('span._ao3e') as HTMLElement ||
+        el.querySelector('span') as HTMLElement ||
+        el;
 
       if (!textEl) return;
 
