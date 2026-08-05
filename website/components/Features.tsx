@@ -1,38 +1,26 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ShieldAlert, AlertTriangle, MessageSquareWarning, FileText } from 'lucide-react';
+import { ShieldAlert, AlertTriangle, MessageSquare, Scan } from 'lucide-react';
 
 const features = [
   {
     icon: ShieldAlert,
-    color: 'text-blue-500',
-    bgColor: 'bg-blue-500/10',
-    borderColor: 'border-blue-500/20',
     title: 'Adult Content Protection',
     description: 'Detects and obscures explicit images before they are viewed using lightweight local vision AI models.',
   },
   {
     icon: AlertTriangle,
-    color: 'text-amber-500',
-    bgColor: 'bg-amber-500/10',
-    borderColor: 'border-amber-500/20',
     title: 'Graphic Content Protection',
     description: 'Identifies disturbing visual content and helps reduce exposure across web pages and media feeds.',
   },
   {
-    icon: MessageSquareWarning,
-    color: 'text-rose-500',
-    bgColor: 'bg-rose-500/10',
-    borderColor: 'border-rose-500/20',
+    icon: MessageSquare,
     title: 'Harmful Conversation Protection',
-    description: 'Detects abusive, threatening, and inappropriate language in browser-based conversations and chats.',
+    description: 'Detects abusive, threatening, and inappropriate language in browser-based conversations.',
   },
   {
-    icon: FileText,
-    color: 'text-emerald-500',
-    bgColor: 'bg-emerald-500/10',
-    borderColor: 'border-emerald-500/20',
+    icon: Scan,
     title: 'OCR Protection',
     description: 'Scans text embedded inside images and screenshots, applying the same moderation pipeline offline.',
   },
@@ -40,18 +28,15 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0B1220] relative">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-xs font-bold text-blue-500 tracking-widest uppercase mb-3">
-            Comprehensive Defense Matrix
+    <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0B1220] border-t border-slate-800/40">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-14">
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+            Features
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight">
+            Comprehensive Defense Layers
           </h2>
-          <p className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
-            Built for Modern Families & Individuals
-          </p>
-          <p className="mt-4 text-base text-slate-400">
-            Four specialized protection layers running concurrently in your browser without sacrificing speed or privacy.
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -60,19 +45,19 @@ export function Features() {
             return (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="p-6 rounded-2xl bg-[#111827] border border-slate-800 hover:border-slate-700 transition-all duration-300 group hover:-translate-y-1"
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                className="p-6 rounded-xl bg-[#0D1322] border border-slate-800/60 hover:border-slate-700 transition-colors"
               >
-                <div className={`w-12 h-12 rounded-xl ${feature.bgColor} ${feature.borderColor} border flex items-center justify-center mb-6 group-hover:scale-105 transition-transform`}>
-                  <Icon className={`w-6 h-6 ${feature.color}`} />
+                <div className="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center mb-5 text-slate-300">
+                  <Icon className="w-4 h-4" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-100 mb-2 group-hover:text-blue-400 transition-colors">
+                <h3 className="text-sm font-semibold text-slate-100 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-400 leading-relaxed">
                   {feature.description}
                 </p>
               </motion.div>

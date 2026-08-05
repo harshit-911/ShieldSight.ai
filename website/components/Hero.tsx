@@ -1,112 +1,90 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Download, Play, Shield, Lock, Zap, EyeOff } from 'lucide-react';
+import { Download, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-28 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden mesh-background">
-      {/* Background Subtle Ambient Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none" />
-
-      <div className="max-w-5xl mx-auto text-center relative z-10">
-        {/* Cybersecurity Status Badge */}
+    <section className="relative min-h-[90vh] flex items-center justify-center pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-[#0B1220]">
+      <div className="max-w-4xl mx-auto text-center relative z-10">
+        {/* Minimal Status Pill */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-slate-300 text-xs font-medium mb-8 shadow-sm"
+          transition={{ duration: 0.4 }}
+          className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-800 bg-slate-900/50 text-slate-400 text-xs font-medium mb-8"
         >
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>On-Device Multimodal Protection Engine v1.0</span>
-          <span className="text-slate-600">|</span>
-          <span className="text-blue-400 font-semibold">Manifest V3 Certified</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span>On-Device AI Protection Engine v1.0</span>
         </motion.div>
 
-        {/* Headline */}
+        {/* Minimalist Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-50 tracking-tight leading-[1.1] mb-6"
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-4xl sm:text-6xl lg:text-7xl font-bold text-slate-100 tracking-tight leading-[1.15] mb-6"
         >
           Protecting Every Click.{' '}
-          <span className="block mt-1 bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-400 bg-clip-text text-transparent">
+          <span className="text-slate-400 font-normal block sm:inline">
             Protecting Every Family.
           </span>
         </motion.h1>
 
-        {/* Subheading */}
+        {/* Minimalist Subheading */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base sm:text-lg lg:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed font-normal"
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-sm sm:text-base lg:text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           ShieldSight AI uses on-device multimodal AI to help reduce exposure to explicit images, graphic violence, harmful language, and unsafe online interactions while keeping your browsing private.
         </motion.p>
 
         {/* Action Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-16"
         >
           <Link
             href="#download"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-base transition-all shadow-xl shadow-blue-600/25 active:scale-[0.98]"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-slate-100 hover:bg-white text-slate-950 font-semibold text-xs transition-all active:scale-[0.98]"
           >
-            <Download className="w-5 h-5" />
+            <Download className="w-4 h-4" />
             Download Extension
           </Link>
           <Link
             href="#demo"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 font-semibold text-base transition-all"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-slate-300 hover:text-white text-xs font-semibold transition-all group"
           >
-            <Play className="w-4 h-4 fill-current text-blue-400" />
-            Watch Demo
+            <span>Explore Live Demo</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
 
-        {/* Trust Metrics Grid */}
+        {/* Minimal Metrics Row */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8 border-t border-slate-800/60"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="pt-8 border-t border-slate-800/50 flex flex-wrap justify-center items-center gap-8 sm:gap-16 text-xs text-slate-400 font-mono"
         >
-          <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/50 text-left">
-            <div className="flex items-center gap-2 text-blue-400 mb-1">
-              <Lock className="w-4 h-4" />
-              <span className="text-xl font-bold text-slate-100">100%</span>
-            </div>
-            <p className="text-xs text-slate-400 font-medium">Local Processing</p>
+          <div>
+            <span className="text-slate-100 font-bold block text-sm font-sans">100% Local</span>
+            <span>On-device processing</span>
           </div>
-
-          <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/50 text-left">
-            <div className="flex items-center gap-2 text-emerald-400 mb-1">
-              <Zap className="w-4 h-4" />
-              <span className="text-xl font-bold text-slate-100">&lt; 25ms</span>
-            </div>
-            <p className="text-xs text-slate-400 font-medium">Ultra-Fast Latency</p>
+          <div className="hidden sm:block w-px h-6 bg-slate-800" />
+          <div>
+            <span className="text-slate-100 font-bold block text-sm font-sans">&lt; 25ms</span>
+            <span>Inference latency</span>
           </div>
-
-          <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/50 text-left">
-            <div className="flex items-center gap-2 text-indigo-400 mb-1">
-              <EyeOff className="w-4 h-4" />
-              <span className="text-xl font-bold text-slate-100">0</span>
-            </div>
-            <p className="text-xs text-slate-400 font-medium">Cloud Data Uploads</p>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/50 text-left">
-            <div className="flex items-center gap-2 text-amber-400 mb-1">
-              <Shield className="w-4 h-4" />
-              <span className="text-xl font-bold text-slate-100">Zero</span>
-            </div>
-            <p className="text-xs text-slate-400 font-medium">Browsing History Logging</p>
+          <div className="hidden sm:block w-px h-6 bg-slate-800" />
+          <div>
+            <span className="text-slate-100 font-bold block text-sm font-sans">Zero</span>
+            <span>Cloud logging</span>
           </div>
         </motion.div>
       </div>

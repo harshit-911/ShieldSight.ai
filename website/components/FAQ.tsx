@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 
 const faqs = [
   {
@@ -35,38 +35,32 @@ export function FAQ() {
   };
 
   return (
-    <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0D1322] border-t border-slate-800/80 relative">
+    <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0B1220] border-t border-slate-800/40">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-xs font-bold text-blue-500 tracking-widest uppercase mb-3">
-            Got Questions?
-          </h2>
-          <p className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
+        <div className="mb-12">
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+            Questions
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight">
             Frequently Asked Questions
-          </p>
-          <p className="mt-4 text-base text-slate-400">
-            Everything you need to know about ShieldSight AI protection, privacy, and compatibility.
-          </p>
+          </h2>
         </div>
 
-        <div className="space-y-4">
+        <div className="border-t border-slate-800/40 divide-y divide-slate-800/40">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div
-                key={faq.question}
-                className="bg-[#111827] border border-slate-800/80 rounded-2xl overflow-hidden transition-colors"
-              >
+              <div key={faq.question} className="py-5">
                 <button
                   onClick={() => toggle(idx)}
-                  className="w-full p-6 text-left flex items-center justify-between gap-4 font-semibold text-slate-100 text-base sm:text-lg hover:text-blue-400 transition-colors"
+                  className="w-full text-left flex items-center justify-between gap-4 text-slate-100 text-sm font-semibold hover:text-slate-300 transition-colors"
                 >
                   <span>{faq.question}</span>
-                  <ChevronDown
-                    className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300 ${
-                      isOpen ? 'rotate-180 text-blue-500' : ''
-                    }`}
-                  />
+                  {isOpen ? (
+                    <Minus className="w-4 h-4 text-slate-400 shrink-0" />
+                  ) : (
+                    <Plus className="w-4 h-4 text-slate-400 shrink-0" />
+                  )}
                 </button>
 
                 <AnimatePresence>
@@ -75,11 +69,11 @@ export function FAQ() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                     >
-                      <div className="px-6 pb-6 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50 pt-4">
+                      <p className="pt-3 text-xs text-slate-400 leading-relaxed max-w-3xl">
                         {faq.answer}
-                      </div>
+                      </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
