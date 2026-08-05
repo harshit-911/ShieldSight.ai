@@ -1,30 +1,30 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Download, ArrowRight } from 'lucide-react';
+import { Download } from 'lucide-react';
 import Link from 'next/link';
 
 export function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-[#0B1220]">
-      <div className="max-w-4xl mx-auto text-center relative z-10">
-        {/* Minimal Status Pill */}
+    <section className="relative pt-36 pb-20 px-4 sm:px-6 lg:px-8 bg-[#0B1220]">
+      <div className="max-w-3xl mx-auto text-center">
+        {/* Status Pill */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-800 bg-slate-900/50 text-slate-400 text-xs font-medium mb-8"
+          transition={{ duration: 0.3 }}
+          className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full border border-slate-800 bg-slate-900/60 text-slate-400 text-xs font-mono mb-6"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <span>On-Device AI Protection Engine v1.0</span>
+          <span>On-Device AI Engine</span>
         </motion.div>
 
-        {/* Minimalist Headline */}
+        {/* Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-bold text-slate-100 tracking-tight leading-[1.15] mb-6"
+          transition={{ duration: 0.4, delay: 0.05 }}
+          className="text-4xl sm:text-6xl font-bold text-slate-100 tracking-tight leading-[1.1] mb-5"
         >
           Protecting Every Click.{' '}
           <span className="text-slate-400 font-normal block sm:inline">
@@ -32,59 +32,52 @@ export function Hero() {
           </span>
         </motion.h1>
 
-        {/* Minimalist Subheading */}
+        {/* Subheading */}
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-sm sm:text-base lg:text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="text-sm sm:text-base text-slate-400 max-w-xl mx-auto mb-8 leading-relaxed"
         >
-          ShieldSight AI uses on-device multimodal AI to help reduce exposure to explicit images, graphic violence, harmful language, and unsafe online interactions while keeping your browsing private.
+          On-device AI protection against explicit images, graphic violence, and harmful language while keeping your browsing 100% private.
         </motion.p>
 
-        {/* Action Buttons */}
+        {/* Download Button */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-16"
+          transition={{ duration: 0.4, delay: 0.15 }}
+          className="flex justify-center mb-14"
         >
           <Link
             href="#download"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-slate-100 hover:bg-white text-slate-950 font-semibold text-xs transition-all active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-slate-100 hover:bg-white text-slate-950 font-semibold text-xs transition-all active:scale-[0.98]"
           >
             <Download className="w-4 h-4" />
             Download Extension
           </Link>
-          <Link
-            href="#demo"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-slate-300 hover:text-white text-xs font-semibold transition-all group"
-          >
-            <span>Explore Live Demo</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-          </Link>
         </motion.div>
 
-        {/* Minimal Metrics Row */}
+        {/* Essential Metrics */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="pt-8 border-t border-slate-800/50 flex flex-wrap justify-center items-center gap-8 sm:gap-16 text-xs text-slate-400 font-mono"
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="pt-6 border-t border-slate-800/40 flex justify-center items-center gap-8 text-xs text-slate-400 font-mono"
         >
           <div>
-            <span className="text-slate-100 font-bold block text-sm font-sans">100% Local</span>
-            <span>On-device processing</span>
+            <span className="text-slate-200 font-semibold block font-sans">100% Local</span>
+            <span>On-Device AI</span>
           </div>
-          <div className="hidden sm:block w-px h-6 bg-slate-800" />
+          <div className="w-px h-4 bg-slate-800" />
           <div>
-            <span className="text-slate-100 font-bold block text-sm font-sans">&lt; 25ms</span>
-            <span>Inference latency</span>
+            <span className="text-slate-200 font-semibold block font-sans">&lt; 25ms</span>
+            <span>Latency</span>
           </div>
-          <div className="hidden sm:block w-px h-6 bg-slate-800" />
+          <div className="w-px h-4 bg-slate-800" />
           <div>
-            <span className="text-slate-100 font-bold block text-sm font-sans">Zero</span>
-            <span>Cloud logging</span>
+            <span className="text-slate-200 font-semibold block font-sans">Zero</span>
+            <span>Cloud Logging</span>
           </div>
         </motion.div>
       </div>
