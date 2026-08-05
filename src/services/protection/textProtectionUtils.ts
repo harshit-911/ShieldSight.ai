@@ -1,6 +1,6 @@
 /**
  * ShieldSight AI - Text Protection Styling Utilities
- * Injects responsive CSS rules for text blur and flat inline safety badges.
+ * Injects responsive CSS rules for text blur and minimalist inline safety badges.
  */
 
 const TEXT_PROTECTION_STYLES_ID = 'shieldsight-text-protection-styles';
@@ -24,25 +24,22 @@ export function ensureTextProtectionStyles(): void {
       display: inline-block !important;
     }
 
-    /* Flat Cybersecurity Inline Safety Badge */
+    /* Minimalist Inline Safety Badge */
     .shieldsight-text-badge {
       display: inline-flex !important;
       align-items: center !important;
-      gap: 8px !important;
-      margin: 0 6px !important;
-      padding: 3px 10px !important;
-      background: #0f172a !important;
+      gap: 6px !important;
+      margin: 0 4px !important;
+      padding: 2px 8px !important;
+      background: #0D1322 !important;
       border: 1px solid #1e293b !important;
       border-radius: 4px !important;
-      color: #f3f4f6 !important;
+      color: #f8fafc !important;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
       font-size: 10px !important;
-      font-weight: 700 !important;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+      font-weight: 600 !important;
       vertical-align: middle !important;
       z-index: 9990 !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.02em !important;
     }
 
     .shieldsight-badge-icon {
@@ -50,21 +47,21 @@ export function ensureTextProtectionStyles(): void {
     }
 
     .shieldsight-badge-text {
-      color: #ec4899 !important;
+      color: #f8fafc !important;
+      font-weight: 600 !important;
     }
 
     .shieldsight-badge-reveal {
       background: #1e293b !important;
       border: 1px solid #334155 !important;
-      border-radius: 4px !important;
-      color: #f1f5f9 !important;
-      padding: 1px 8px !important;
+      border-radius: 3px !important;
+      color: #f8fafc !important;
+      padding: 1px 6px !important;
       font-size: 9px !important;
-      font-weight: 800 !important;
+      font-weight: 600 !important;
       cursor: pointer !important;
-      transition: all 0.15s ease !important;
+      transition: background 0.15s ease !important;
       text-transform: uppercase !important;
-      letter-spacing: 0.02em !important;
     }
 
     .shieldsight-badge-reveal:hover {
