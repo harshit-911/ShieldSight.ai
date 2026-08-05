@@ -22,6 +22,8 @@ import { ToxicityResult } from '../types/text';
 import { DiscoveredImage } from '../types';
 
 import { conversationDiscoveryService } from '../services/conversation/ConversationDiscoveryService';
+import { conversationQueue } from '../services/conversation/ConversationQueue';
+import { obscureMessage } from '../services/conversation/ConversationUtils';
 import { presentationService } from '../services/presentation/PresentationService';
 
 console.log('[ShieldSight AI] Content script injected successfully (Image & Text Moderation Engine Active)');
@@ -34,6 +36,8 @@ class ContentProtectionEngine {
   private unsubscribeImageQueueFailed: (() => void) | null = null;
   private unsubscribeTextDiscovery: (() => void) | null = null;
   private unsubscribeTextQueueCompleted: (() => void) | null = null;
+  private unsubscribeConversationDiscovery: (() => void) | null = null;
+  private unsubscribeConversationCompleted: (() => void) | null = null;
 
   // Viewport Observer for lazy AI inference scheduling
   private viewportObserver: IntersectionObserver | null = null;
@@ -212,6 +216,20 @@ class ContentProtectionEngine {
       });
     }
 
+    if (!this.unsubscribeConversationDiscovery) {
+      this.unsubscribeConversationDiscovery = conversationDiscoveryService.onDiscovered((message) => {
+        conversationQueue.enqueue(message);
+      });
+    }
+
+    if (!this.unsubscribeConversationCompleted) {
+      this.unsubscribeConversationCompleted = conversationQueue.on('MESSAGE_COMPLETED', (event) => {
+        if (event.message && event.result && event.result.isHarmful) {
+          obscureMessage(event.message, event.result);
+        }
+      });
+    }
+
     // Start queues and discovery services
     imageProcessingQueue.start();
     imageDiscoveryService.start();
@@ -220,6 +238,7 @@ class ContentProtectionEngine {
     textDiscoveryService.start();
 
     // Start real-time messaging protection module
+    conversationQueue.start();
     conversationDiscoveryService.start();
   }
 

@@ -175,9 +175,12 @@ export class IndianModerationLexicon {
       const variants = [entry.canonicalWord.toLowerCase(), ...entry.variants.map((v) => v.toLowerCase())];
 
       for (const variant of variants) {
-        // Escaped regex for multi-word or single-word boundary matching
+        // Escaped regex for multi-word or single-word boundary matching (allowing word inflections)
         const escaped = variant.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const pattern = new RegExp(`\\b${escaped}\\b`, 'gi');
+        const isMultiWord = variant.includes(' ');
+        const pattern = isMultiWord
+          ? new RegExp(`\\b${escaped}\\b`, 'gi')
+          : new RegExp(`\\b${escaped}[a-z]*\\b`, 'gi');
 
         let match: RegExpExecArray | null;
         while ((match = pattern.exec(textLower)) !== null) {

@@ -94,7 +94,7 @@ export class TextDiscoveryService {
 
     // Extract direct text content (avoid duplicating child text blocks)
     const textContent = this.extractDirectText(el);
-    if (!textContent || textContent.length < 5) return;
+    if (!textContent || textContent.length < 2) return;
 
     this.discoveredElements.add(el);
     this.idCounter += 1;
@@ -121,7 +121,7 @@ export class TextDiscoveryService {
     });
 
     const trimmed = directText.trim();
-    if (trimmed.length >= 5) {
+    if (trimmed.length >= 2) {
       return trimmed;
     }
 
