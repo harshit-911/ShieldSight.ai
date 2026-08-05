@@ -1,7 +1,7 @@
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { DownloadButton } from '../../components/DownloadButton';
-import { Download, FolderArchive, Monitor, ToggleRight, FolderOpen, CheckCircle2, AlertCircle, Github, HelpCircle, FileCode, Check, Command, Terminal, Copy } from 'lucide-react';
+import { Download, FolderArchive, Monitor, ToggleRight, FolderOpen, CheckCircle2, AlertCircle, Github, HelpCircle, FileCode, Check, Command } from 'lucide-react';
 
 export const metadata = {
   title: 'Installation Guide — ShieldSight AI',
@@ -47,10 +47,10 @@ export default function InstallPage() {
     },
     {
       step: 'Step 6',
-      title: 'Select the dist/ Folder',
+      title: 'Select Extracted Folder',
       icon: CheckCircle2,
-      description: 'Choose the dist/ folder containing manifest.json.',
-      detail: 'Select /Users/harshit/Developer/ShieldSight/dist and click Select Folder.',
+      description: 'Choose the extracted folder containing manifest.json.',
+      detail: 'Select the unzipped folder (or dist/ subfolder) and click Select Folder.',
     },
   ];
 
@@ -78,7 +78,7 @@ export default function InstallPage() {
           </div>
         </div>
 
-        {/* HIGH-IMPACT LOCAL WORKSPACE DIRECTORY CALLOUT */}
+        {/* TARGET EXTENSION FOLDER PATH CALLOUT */}
         <div className="p-6 sm:p-8 rounded-2xl bg-slate-900/90 border border-blue-500/40 mb-14 text-left space-y-4 shadow-2xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -90,28 +90,28 @@ export default function InstallPage() {
                   Target Extension Folder Path
                 </div>
                 <div className="text-xs text-slate-400">
-                  Select this exact folder when clicking <strong>"Load Unpacked"</strong> in Chrome:
+                  Select this folder when clicking <strong>"Load Unpacked"</strong> in Chrome:
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Absolute Directory Code Block */}
+          {/* Clean Directory Code Block */}
           <div className="p-4 rounded-xl bg-[#0B1220] border border-slate-800 flex items-center justify-between gap-4 font-mono text-xs text-slate-200">
             <span className="text-emerald-400 font-bold select-all truncate">
-              /Users/harshit/Developer/ShieldSight/dist
+              ShieldSight.ai/dist
             </span>
             <span className="text-[10px] text-slate-500 font-sans uppercase shrink-0 font-bold">
               Target Folder
             </span>
           </div>
 
-          {/* macOS Navigation Shortcut Hint */}
+          {/* Folder Navigation Shortcut Hint */}
           <div className="flex flex-wrap items-center gap-2 text-xs text-slate-300 pt-1">
             <Command className="w-3.5 h-3.5 text-slate-400" />
-            <span className="font-semibold text-slate-200">macOS Shortcut:</span>
+            <span className="font-semibold text-slate-200">File Picker Tip:</span>
             <span className="text-slate-400">
-              In the Chrome file picker, press <kbd className="bg-slate-800 px-1.5 py-0.5 rounded text-blue-300 font-mono text-[11px] border border-slate-700">Cmd + Shift + G</kbd>, paste the path above, and press Enter.
+              In Chrome's file picker, navigate to the extracted folder (or <code className="bg-slate-800 px-1.5 py-0.5 rounded text-blue-300 font-mono text-[11px] border border-slate-700">dist/</code> subfolder) containing <code className="bg-slate-800 px-1.5 py-0.5 rounded text-slate-200 font-mono text-[11px]">manifest.json</code>.
             </span>
           </div>
         </div>
@@ -166,7 +166,7 @@ export default function InstallPage() {
 
           {/* Directory File Structure Visualizer */}
           <div className="p-5 rounded-xl bg-[#0B1220] border border-slate-800/80 font-mono text-xs text-slate-300 space-y-2">
-            <div className="text-emerald-400 font-bold">📁 /Users/harshit/Developer/ShieldSight/dist/</div>
+            <div className="text-emerald-400 font-bold">📁 ShieldSight.ai/dist/</div>
             <div className="pl-4 text-slate-200">├── 📄 manifest.json  <span className="text-emerald-400 font-sans font-semibold">← CRITICAL: Must be directly inside selected folder</span></div>
             <div className="pl-4 text-slate-400">├── 📄 background.js</div>
             <div className="pl-4 text-slate-400">├── 📄 content.js</div>
