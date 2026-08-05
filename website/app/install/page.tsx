@@ -1,7 +1,7 @@
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { DownloadButton } from '../../components/DownloadButton';
-import { Download, FolderArchive, Monitor, ToggleRight, FolderOpen, CheckCircle2, AlertCircle, Github, HelpCircle, FileCode, Check, Command, Info } from 'lucide-react';
+import { Download, FolderArchive, Monitor, ToggleRight, FolderOpen, CheckCircle2, AlertCircle, Github, HelpCircle, FileCode, Check } from 'lucide-react';
 
 export const metadata = {
   title: 'Installation Guide — ShieldSight AI',
@@ -12,17 +12,17 @@ export default function InstallPage() {
   const steps = [
     {
       step: 'Step 1',
-      title: 'Download Extension ZIP',
+      title: 'Download Repository ZIP',
       icon: Download,
-      description: 'Get the latest ShieldSight AI extension package ZIP file.',
-      detail: 'Click the Download button to receive ShieldSightAI-v1.0.0.zip (or the development build ZIP).',
+      description: 'Download the ShieldSight AI package or repository ZIP.',
+      detail: 'Click Download to receive ShieldSight.ai-main.zip.',
     },
     {
       step: 'Step 2',
-      title: 'Extract the ZIP Archive',
+      title: 'Extract the ZIP File',
       icon: FolderArchive,
-      description: 'Unpack the downloaded ZIP file to a folder on your computer.',
-      detail: 'Right-click the downloaded ZIP and select "Extract All" (Windows) or double-click to unzip (Mac).',
+      description: 'Unpack the downloaded ZIP archive on your computer.',
+      detail: 'Right-click the ZIP and select "Extract All" (Windows) or double-click to unzip (Mac).',
     },
     {
       step: 'Step 3',
@@ -47,10 +47,10 @@ export default function InstallPage() {
     },
     {
       step: 'Step 6',
-      title: 'Select the Extracted Unzipped Folder',
+      title: 'Select the "public" Folder',
       icon: CheckCircle2,
-      description: 'Choose the extracted folder containing manifest.json.',
-      detail: 'Select the unzipped folder (containing manifest.json) and click Select Folder.',
+      description: 'Open ShieldSight.ai-main and select the public/ folder.',
+      detail: 'Select ShieldSight.ai-main/public (where manifest.json is located) and click Select Folder.',
     },
   ];
 
@@ -86,38 +86,22 @@ export default function InstallPage() {
             </div>
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-blue-400">
-                Which Folder to Select in Chrome?
+                Where is manifest.json Located?
               </div>
               <div className="text-xs text-slate-400">
-                Select the unzipped folder containing <code className="text-slate-200 font-mono">manifest.json</code>:
+                In the extracted <code className="text-slate-200 font-mono">ShieldSight.ai-main</code> folder, open the <strong><code className="text-emerald-300 font-mono font-bold">public/</code></strong> folder!
               </div>
             </div>
           </div>
 
-          {/* Dual Path Comparison Boxes */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-            <div className="p-3.5 rounded-xl bg-[#0B1220] border border-slate-800 space-y-1">
-              <div className="font-bold text-emerald-400 flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5" />
-                <span>Downloaded Release ZIP</span>
-              </div>
-              <p className="text-slate-300">
-                Select the extracted folder directly (e.g. <code className="bg-slate-900 px-1 py-0.5 rounded text-blue-300 font-mono">ShieldSightAI-v1.0.0/</code>).
-              </p>
-              <p className="text-[11px] text-slate-400 pt-0.5">
-                <em>No inner dist/ folder exists in downloaded release ZIPs!</em>
-              </p>
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-[#0B1220] border border-slate-800 space-y-1">
-              <div className="font-bold text-emerald-400 flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5" />
-                <span>Source Code / Git Clone</span>
-              </div>
-              <p className="text-slate-300">
-                If you cloned the source code and ran <code className="bg-slate-900 px-1 py-0.5 rounded text-blue-300 font-mono">npm run build</code>, select the <strong><code className="bg-slate-900 px-1 py-0.5 rounded text-emerald-300 font-mono">dist/</code></strong> subfolder.
-              </p>
-            </div>
+          {/* Folder Path Box */}
+          <div className="p-4 rounded-xl bg-[#0B1220] border border-slate-800 flex items-center justify-between gap-4 font-mono text-xs text-slate-200">
+            <span className="text-emerald-400 font-bold select-all truncate">
+              ShieldSight.ai-main / public
+            </span>
+            <span className="text-[10px] text-slate-500 font-sans uppercase shrink-0 font-bold">
+              Exact Folder to Select
+            </span>
           </div>
         </div>
 
@@ -161,30 +145,30 @@ export default function InstallPage() {
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-100">
-                Extracted Folder Content Verification
+                Downloaded ZIP Folder Structure
               </h2>
               <p className="text-xs text-slate-400">
-                The folder you select must contain these files directly inside it:
+                Open <code className="text-slate-200 font-mono">ShieldSight.ai-main</code> and select the <strong><code className="text-emerald-400 font-mono font-bold">public/</code></strong> folder:
               </p>
             </div>
           </div>
 
           {/* Directory File Structure Visualizer */}
           <div className="p-5 rounded-xl bg-[#0B1220] border border-slate-800/80 font-mono text-xs text-slate-300 space-y-2">
-            <div className="text-emerald-400 font-bold">📁 Extracted Extension Folder (e.g. ShieldSightAI-v1.0.0/ or dist/)</div>
-            <div className="pl-4 text-slate-200">├── 📄 manifest.json  <span className="text-emerald-400 font-sans font-semibold">← CRITICAL: Must be directly inside selected folder</span></div>
-            <div className="pl-4 text-slate-400">├── 📄 background.js</div>
-            <div className="pl-4 text-slate-400">├── 📄 content.js</div>
-            <div className="pl-4 text-slate-400">├── 📄 offscreen.html</div>
-            <div className="pl-4 text-slate-400">├── 📄 offscreen.js</div>
-            <div className="pl-4 text-slate-400">└── 📁 icons/</div>
+            <div className="text-slate-400 font-bold">📁 ShieldSight.ai-main/</div>
+            <div className="pl-4 text-emerald-400 font-bold">└── 📁 public/  <span className="text-emerald-400 font-sans font-semibold">← SELECT THIS FOLDER IN CHROME!</span></div>
+            <div className="pl-8 text-slate-200">├── 📄 manifest.json  <span className="text-emerald-400 font-sans font-semibold font-bold">← Located directly inside public/</span></div>
+            <div className="pl-8 text-slate-400">├── 📄 offscreen.html</div>
+            <div className="pl-8 text-slate-400">├── 📁 icons/</div>
+            <div className="pl-8 text-slate-400">├── 📁 models/</div>
+            <div className="pl-8 text-slate-400">└── 📁 tessdata/</div>
           </div>
 
-          {/* Common Mistake Callout */}
-          <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-900/40 text-xs text-amber-300 leading-relaxed flex items-start gap-3">
-            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+          {/* Summary Note */}
+          <div className="p-4 rounded-xl bg-blue-950/20 border border-blue-900/40 text-xs text-blue-300 leading-relaxed flex items-start gap-3">
+            <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
             <div>
-              <strong>Common Mistake:</strong> Do NOT look for an inner <code className="bg-amber-950 px-1.5 py-0.5 rounded font-mono text-amber-200">dist/</code> folder inside downloaded release ZIPs. The downloaded release ZIP already contains <code className="bg-amber-950 px-1.5 py-0.5 rounded font-mono text-amber-200">manifest.json</code> directly at its root level. Select the extracted unzipped folder directly!
+              <strong>Quick Rule:</strong> In Chrome's <em>Load Unpacked</em> file window, click into <strong><code className="bg-blue-950 px-1.5 py-0.5 rounded font-mono text-blue-200">ShieldSight.ai-main</code></strong>, click on <strong><code className="bg-blue-950 px-1.5 py-0.5 rounded font-mono text-emerald-300 font-bold">public</code></strong>, and click <strong>Select Folder</strong> / <strong>Open</strong>!
             </div>
           </div>
         </div>
