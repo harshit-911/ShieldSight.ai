@@ -5,3 +5,6 @@ dist
 .agents
 .gemini
 *.log
+website/.next
+website/node_modules
+
