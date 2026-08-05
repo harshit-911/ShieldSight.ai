@@ -9,43 +9,25 @@ import { MessageElement } from './ConversationTypes';
 import { ToxicityResult } from '../../types/text';
 import { logger } from '../../utils/logger';
 
-// WeakMap storing active warning pill overlays associated with their text elements
-const activeWarningPills = new WeakMap<HTMLElement, HTMLElement>();
-
-function ensureConversationStyles(): void {
-  if (typeof document === 'undefined') return;
-  const id = 'shieldsight-conversation-styles';
-  if (document.getElementById(id)) return;
-
-  const style = document.createElement('style');
-  style.id = id;
-  style.textContent = `
-    .shieldsight-blurred-text {
-      filter: blur(12px) !important;
-      user-select: none !important;
-      pointer-events: none !important;
-      transition: filter 0.3s ease;
-    }
-  `;
-  document.head.appendChild(style);
-}
+// WeakMap storing original inner nodes of the chat bubble to support Reveal Once
+const originalContents = new WeakMap<HTMLElement, Node[]>();
 
 /**
  * Obscures toxic message bubbles with a consumer-friendly safety warning card.
  */
 export function obscureMessage(message: MessageElement, result: ToxicityResult): void {
   const container = message.element;
-  if (activeWarningPills.has(container)) return; // Already obscured
+  if (originalContents.has(container)) return; // Already obscured
 
-  const parent = container.parentElement;
-  if (!parent) return;
+  // 1. Stash current child nodes for Reveal Once restoration
+  const kids: Node[] = [];
+  while (container.firstChild) {
+    kids.push(container.firstChild);
+    container.removeChild(container.firstChild);
+  }
+  originalContents.set(container, kids);
 
-  ensureConversationStyles();
-
-  // Apply CSS Blur class to container (keeps all text nodes intact for React virtual DOM stability)
-  container.classList.add('shieldsight-blurred-text');
-
-  // Build Warning Pill container
+  // 2. Build Warning Pill container
   const pill = document.createElement('div');
   pill.className = 'shieldsight-message-warning-pill';
   pill.style.background = '#0f172a';
@@ -61,7 +43,6 @@ export function obscureMessage(message: MessageElement, result: ToxicityResult):
   pill.style.display = 'inline-block';
   pill.style.verticalAlign = 'middle';
   pill.style.userSelect = 'text';
-  pill.style.marginTop = '6px';
 
   const header = document.createElement('div');
   header.style.fontWeight = '800';
@@ -179,8 +160,7 @@ export function obscureMessage(message: MessageElement, result: ToxicityResult):
   pill.appendChild(diagnostics);
   pill.appendChild(actions);
 
-  parent.appendChild(pill);
-  activeWarningPills.set(container, pill);
+  container.appendChild(pill);
 
   // Structured audit logger output matching specifications
   logger.styled(
@@ -196,15 +176,12 @@ export function obscureMessage(message: MessageElement, result: ToxicityResult):
  */
 export function restoreMessage(message: MessageElement): void {
   const container = message.element;
-  container.classList.remove('shieldsight-blurred-text');
-  container.style.filter = 'none';
+  const kids = originalContents.get(container);
 
-  const pill = activeWarningPills.get(container);
-  if (pill) {
-    if (pill.parentElement) {
-      pill.parentElement.removeChild(pill);
-    }
-    activeWarningPills.delete(container);
+  if (kids) {
+    container.textContent = '';
+    kids.forEach((k) => container.appendChild(k));
+    originalContents.delete(container);
     logger.info(`[ShieldSight Conversation] Revealed message ${message.id}`);
   }
 }

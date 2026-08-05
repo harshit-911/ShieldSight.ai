@@ -1,12 +1,13 @@
 /**
  * ShieldSight AI - Local Toxicity & Text Moderation Classifier
  * Implements TextClassifier interface.
- * Prepared for local transformer ONNX WebAssembly model inference (MobileBERT / MiniLM).
- * Evaluates text blocks for: ABUSIVE, HARASSMENT, SEXUAL, THREAT, HATE, and SAFE.
+ * Uses TextNormalizationEngine as a preprocessing layer for Hinglish, Romanized Hindi, and Leetspeak.
+ * Evaluates text blocks for: ABUSIVE, HARASSMENT, SEXUAL, THREAT, HATE, GROOMING, and SAFE.
  */
 
 import { DiscoveredTextBlock, ToxicityResult, ToxicityLabel } from '../../types/text';
 import { TextClassifier } from './TextClassifier';
+import { textNormalizationEngine } from '../normalization/TextNormalizationEngine';
 
 export class ToxicityClassifier implements TextClassifier {
   readonly id: string = 'toxicity-transformer-onnx';
@@ -23,18 +24,21 @@ export class ToxicityClassifier implements TextClassifier {
    */
   async initialize(): Promise<void> {
     if (this.isInitialized) return;
-    console.log('[ShieldSight AI] Initializing Local Toxicity Transformer Model...');
+    console.log('[ShieldSight AI] Initializing Local Toxicity Transformer Model with Preprocessing Engine...');
     this.isInitialized = true;
   }
 
   /**
    * Evaluates a discovered text block for toxic / harmful language categories.
+   * Preprocesses text through Indian Language Normalization Engine first.
    */
   async classify(textBlock: DiscoveredTextBlock): Promise<ToxicityResult> {
     const startTime = performance.now();
     await this.initialize();
 
-    const cleanText = textBlock.text.toLowerCase().trim();
+    // 1. Run Preprocessing Layer (Normalization, Language Detection, Lexicon Risk Boosts)
+    const normResult = textNormalizationEngine.process(textBlock.text);
+    const cleanText = normResult.normalizedText.toLowerCase().trim();
 
     // Toxicity Pattern Evaluation Engine
     const scores: Record<ToxicityLabel, number> = {
@@ -47,12 +51,12 @@ export class ToxicityClassifier implements TextClassifier {
       GROOMING: 0.01,
     };
 
-    // Keyword & Semantic Pattern Heuristics (allowing word inflections and suffixes)
-    const threatRegex = /\b(kill|murder|slaughter|die|dying|dead|stab|shoot|shot|bomb|attack|execute)[a-z]*\b/i;
-    const hateRegex = /\b(nigger|nigga|faggot|retard|chink|kike|spic|racist|supremacist)[a-z]*\b/i;
-    const sexualRegex = /\b(porn|pornography|sex|sexual|erotic|orgasm|explicit|cum|intercourse)[a-z]*\b/i;
-    const harassmentRegex = /\b(harass|stalk|dox|ugly|worthless|idiot|stupid|trash)[a-z]*\b/i;
-    const abusiveRegex = /\b(bitch|bastard|asshole|fuck|motherfuck|shit|cunt|dick)[a-z]*\b/i;
+    // Keyword & Semantic Pattern Heuristics (English + Hinglish / Romanized Hindi inflections)
+    const threatRegex = /\b(kill|murder|slaughter|die|dying|dead|stab|shoot|shot|bomb|attack|execute|maar dunga|maar dalunga|jaan se maar|thok dunga)[a-z]*\b/i;
+    const hateRegex = /\b(nigger|nigga|faggot|retard|chink|kike|spic|racist|supremacist|chakka|meetha)[a-z]*\b/i;
+    const sexualRegex = /\b(porn|pornography|sex|sexual|erotic|orgasm|explicit|cum|intercourse|penis|lauda|loda|laund|lodu|choot|bhosada)[a-z]*\b/i;
+    const harassmentRegex = /\b(harass|stalk|dox|ugly|worthless|idiot|stupid|trash|randi|raandi)[a-z]*\b/i;
+    const abusiveRegex = /\b(bitch|bastard|asshole|fuck|motherfuck|shit|cunt|dick|chutiya|madarchod|behenchod|bhenchod|bhosdike|bhosdi|bsdk|mc|bc|mchd|bchd|harami|kamina|saala|sale|teri maa ki)[a-z]*\b/i;
     const groomingRegex = /\b(meet me|secret|don't tell|send (pics?|photos?)|how old (are you|r u))\b/i;
 
     let detectedLabel: ToxicityLabel = 'SAFE';
@@ -81,6 +85,29 @@ export class ToxicityClassifier implements TextClassifier {
       detectedLabel = 'GROOMING';
       scores.GROOMING = 0.91;
       scores.SAFE = 0.09;
+    }
+
+    // 2. Incorporate Lexicon Risk Score Boosts without overriding AI evaluation
+    const categories: ToxicityLabel[] = ['ABUSIVE', 'HARASSMENT', 'SEXUAL', 'THREAT', 'HATE', 'GROOMING'];
+    let maxHarmfulScore = 0;
+    let highestBoostedCategory: ToxicityLabel | null = null;
+
+    categories.forEach((cat) => {
+      const boost = normResult.riskScoreBoost[cat] || 0;
+      if (boost > 0) {
+        // Apply weighted boost
+        scores[cat] = Math.min(0.99, scores[cat] + boost * (1 - scores[cat]));
+      }
+
+      if (scores[cat] > maxHarmfulScore) {
+        maxHarmfulScore = scores[cat];
+        highestBoostedCategory = cat;
+      }
+    });
+
+    if (maxHarmfulScore > 0.50 && highestBoostedCategory) {
+      detectedLabel = highestBoostedCategory;
+      scores.SAFE = Math.max(0.01, 1 - maxHarmfulScore);
     }
 
     const durationMs = Math.round(performance.now() - startTime);

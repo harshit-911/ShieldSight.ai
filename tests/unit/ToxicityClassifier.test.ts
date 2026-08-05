@@ -91,4 +91,39 @@ describe('ToxicityClassifier Unit Tests', () => {
     expect(resultSong.isHarmful).toBe(true);
     expect(resultSong.label).toBe('HATE');
   });
+
+  it('should normalize and classify obfuscated Hinglish / Romanized Hindi inputs', async () => {
+    // Leetspeak & character substitution Hinglish
+    const block1: DiscoveredTextBlock = {
+      id: 'text-h1',
+      element: document.createElement('p'),
+      text: 'tu mera b c h d hai',
+      timestamp: Date.now(),
+    };
+    const res1 = await classifier.classify(block1);
+    expect(res1.isHarmful).toBe(true);
+    expect(res1.label).toBe('ABUSIVE');
+
+    // Repeated letters & leetspeak
+    const block2: DiscoveredTextBlock = {
+      id: 'text-h2',
+      element: document.createElement('p'),
+      text: 'chuuuutiyaaa mat ban',
+      timestamp: Date.now(),
+    };
+    const res2 = await classifier.classify(block2);
+    expect(res2.isHarmful).toBe(true);
+    expect(res2.label).toBe('ABUSIVE');
+
+    // Threat in Romanized Hindi
+    const block3: DiscoveredTextBlock = {
+      id: 'text-h3',
+      element: document.createElement('p'),
+      text: 'bhai mai tujhe jaan se maar dunga',
+      timestamp: Date.now(),
+    };
+    const res3 = await classifier.classify(block3);
+    expect(res3.isHarmful).toBe(true);
+    expect(res3.label).toBe('THREAT');
+  });
 });

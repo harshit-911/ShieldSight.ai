@@ -73,10 +73,7 @@ export class OpenNSFWClassifier implements ImageClassifier {
 
     try {
       // 2. Untainted Blob + ImageBitmap preprocessing
-      if (image.element && !image.element.src && image.src) {
-        image.element.src = image.src;
-      }
-      tensorData = await ImagePreprocessor.preprocessImageElement(image.element);
+      tensorData = await ImagePreprocessor.preprocessUrl(image.src);
       const preprocessDuration = performance.now() - preprocessStart;
       this.metrics.totalPreprocessingTimeMs += preprocessDuration;
     } catch (error) {

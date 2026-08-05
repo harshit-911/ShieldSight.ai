@@ -61,14 +61,13 @@ describe('Conversation Protection Engine Tests', () => {
 
     // Obscure element
     obscureMessage(message, result);
-    const parent = bubble.parentElement!;
-    expect(parent.querySelector('.shieldsight-message-warning-pill')).not.toBeNull();
-    expect(bubble.classList.contains('shieldsight-blurred-text')).toBe(true);
+    expect(bubble.querySelector('.shieldsight-message-warning-pill')).not.toBeNull();
+    expect(bubble.textContent).toContain('Sensitive Message Hidden');
 
     // Reveal Once element
     restoreMessage(message);
-    expect(parent.querySelector('.shieldsight-message-warning-pill')).toBeNull();
-    expect(bubble.classList.contains('shieldsight-blurred-text')).toBe(false);
+    expect(bubble.querySelector('.shieldsight-message-warning-pill')).toBeNull();
+    expect(bubble.textContent).toBe('harmful text');
   });
 
   it('should handle large conversations efficiently (1000+ messages performance test)', async () => {
