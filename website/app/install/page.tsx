@@ -1,7 +1,7 @@
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { DownloadButton } from '../../components/DownloadButton';
-import { Download, FolderArchive, Monitor, ToggleRight, FolderOpen, CheckCircle2, AlertCircle, Github, HelpCircle, FileCode, Check } from 'lucide-react';
+import { Download, FolderArchive, Monitor, ToggleRight, FolderOpen, CheckCircle2, AlertCircle, Github, HelpCircle, FileCode, Check, Command, Terminal, Copy } from 'lucide-react';
 
 export const metadata = {
   title: 'Installation Guide — ShieldSight AI',
@@ -47,10 +47,10 @@ export default function InstallPage() {
     },
     {
       step: 'Step 6',
-      title: 'Select Folder Containing manifest.json',
+      title: 'Select the dist/ Folder',
       icon: CheckCircle2,
-      description: 'Choose the exact unzipped folder containing manifest.json.',
-      detail: 'Browse to the extracted folder (or dist/ subfolder) and click Select Folder / Open.',
+      description: 'Choose the dist/ folder containing manifest.json.',
+      detail: 'Select /Users/harshit/Developer/ShieldSight/dist and click Select Folder.',
     },
   ];
 
@@ -60,7 +60,7 @@ export default function InstallPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 pb-24">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-800 bg-slate-900/60 text-slate-400 text-xs font-mono mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             <span>Version 1.0.0 Beta</span>
@@ -75,6 +75,44 @@ export default function InstallPage() {
 
           <div className="flex justify-center">
             <DownloadButton variant="primary" showSubtext />
+          </div>
+        </div>
+
+        {/* HIGH-IMPACT LOCAL WORKSPACE DIRECTORY CALLOUT */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-slate-900/90 border border-blue-500/40 mb-14 text-left space-y-4 shadow-2xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                <FolderOpen className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider text-blue-400">
+                  Target Extension Folder Path
+                </div>
+                <div className="text-xs text-slate-400">
+                  Select this exact folder when clicking <strong>"Load Unpacked"</strong> in Chrome:
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Absolute Directory Code Block */}
+          <div className="p-4 rounded-xl bg-[#0B1220] border border-slate-800 flex items-center justify-between gap-4 font-mono text-xs text-slate-200">
+            <span className="text-emerald-400 font-bold select-all truncate">
+              /Users/harshit/Developer/ShieldSight/dist
+            </span>
+            <span className="text-[10px] text-slate-500 font-sans uppercase shrink-0 font-bold">
+              Target Folder
+            </span>
+          </div>
+
+          {/* macOS Navigation Shortcut Hint */}
+          <div className="flex flex-wrap items-center gap-2 text-xs text-slate-300 pt-1">
+            <Command className="w-3.5 h-3.5 text-slate-400" />
+            <span className="font-semibold text-slate-200">macOS Shortcut:</span>
+            <span className="text-slate-400">
+              In the Chrome file picker, press <kbd className="bg-slate-800 px-1.5 py-0.5 rounded text-blue-300 font-mono text-[11px] border border-slate-700">Cmd + Shift + G</kbd>, paste the path above, and press Enter.
+            </span>
           </div>
         </div>
 
@@ -110,57 +148,30 @@ export default function InstallPage() {
           })}
         </div>
 
-        {/* CRITICAL FOLDER SELECTION SPECIFICATION CALLOUT */}
-        <div className="p-8 rounded-2xl bg-gradient-to-b from-[#0D1322] to-[#0A0F1D] border border-blue-500/30 mb-16 text-left space-y-6 shadow-xl">
+        {/* FOLDER SELECTION STRUCTURE DIAGRAM */}
+        <div className="p-8 rounded-2xl bg-[#0D1322] border border-slate-800/80 mb-16 text-left space-y-6 shadow-xl">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-              <FolderOpen className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300">
+              <FileCode className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-100">
-                Which Exact Folder to Select?
+                Extracted Folder Content Verification
               </h2>
               <p className="text-xs text-slate-400">
-                Follow this simple rule when choosing the directory in Chrome's file picker.
+                The folder you select must contain these files directly inside it:
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            {/* Scenario A: Release / Dev ZIP */}
-            <div className="p-4 rounded-xl bg-[#0B1220] border border-slate-800 space-y-2">
-              <div className="font-bold text-blue-400 flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-emerald-400" />
-                <span>Downloaded Release / Dev ZIP</span>
-              </div>
-              <p className="text-slate-300 leading-relaxed">
-                Extract the ZIP file. Open the unzipped folder until you see <code className="bg-slate-900 px-1.5 py-0.5 rounded text-blue-300 font-mono">manifest.json</code>. Select <strong>that folder</strong> (e.g. <code className="bg-slate-900 px-1.5 py-0.5 rounded text-slate-200 font-mono">ShieldSightAI-v1.0.0/</code> or <code className="bg-slate-900 px-1.5 py-0.5 rounded text-slate-200 font-mono">dist/</code>).
-              </p>
-            </div>
-
-            {/* Scenario B: Building from Source */}
-            <div className="p-4 rounded-xl bg-[#0B1220] border border-slate-800 space-y-2">
-              <div className="font-bold text-blue-400 flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-emerald-400" />
-                <span>Cloned GitHub Repository</span>
-              </div>
-              <p className="text-slate-300 leading-relaxed">
-                If you cloned the repo and ran <code className="bg-slate-900 px-1.5 py-0.5 rounded text-blue-300 font-mono">npm run build</code>, select the <strong><code className="bg-slate-900 px-1.5 py-0.5 rounded text-emerald-300 font-mono font-bold">dist/</code></strong> subfolder inside your project directory.
-              </p>
-            </div>
-          </div>
-
-          {/* Directory File Structure Diagram */}
+          {/* Directory File Structure Visualizer */}
           <div className="p-5 rounded-xl bg-[#0B1220] border border-slate-800/80 font-mono text-xs text-slate-300 space-y-2">
-            <div className="text-slate-400 font-sans font-bold text-xs uppercase tracking-wider mb-2 flex items-center gap-2">
-              <FileCode className="w-4 h-4 text-blue-400" />
-              Target Directory File Structure:
-            </div>
-            <div className="text-emerald-400 font-bold">📁 Selected Folder (Must contain manifest.json directly inside)</div>
-            <div className="pl-4 text-slate-300">├── 📄 manifest.json  <span className="text-emerald-400 font-sans font-semibold">← CRITICAL: Must exist directly inside selected folder</span></div>
+            <div className="text-emerald-400 font-bold">📁 /Users/harshit/Developer/ShieldSight/dist/</div>
+            <div className="pl-4 text-slate-200">├── 📄 manifest.json  <span className="text-emerald-400 font-sans font-semibold">← CRITICAL: Must be directly inside selected folder</span></div>
             <div className="pl-4 text-slate-400">├── 📄 background.js</div>
             <div className="pl-4 text-slate-400">├── 📄 content.js</div>
             <div className="pl-4 text-slate-400">├── 📄 offscreen.html</div>
+            <div className="pl-4 text-slate-400">├── 📄 offscreen.js</div>
             <div className="pl-4 text-slate-400">└── 📁 icons/</div>
           </div>
 
@@ -168,12 +179,12 @@ export default function InstallPage() {
           <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-900/40 text-xs text-amber-300 leading-relaxed flex items-start gap-3">
             <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
             <div>
-              <strong>Common Mistake:</strong> Do NOT select a parent folder or nested subfolder that does not contain <code className="bg-amber-950 px-1.5 py-0.5 rounded font-mono text-amber-200">manifest.json</code>. If Chrome displays <em>"Manifest file is missing"</em>, you selected one level too high or too deep.
+              <strong>Common Mistake:</strong> Do NOT select a parent directory or subfolder that does not contain <code className="bg-amber-950 px-1.5 py-0.5 rounded font-mono text-amber-200">manifest.json</code>. If Chrome displays <em>"Manifest file is missing"</em>, make sure to select the <code className="bg-amber-950 px-1.5 py-0.5 rounded font-mono text-amber-200">dist/</code> directory directly.
             </div>
           </div>
         </div>
 
-        {/* Troubleshooting & Issue Support */}
+        {/* Troubleshooting & Support */}
         <div className="p-8 rounded-2xl bg-[#0D1322] border border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-left">
             <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
