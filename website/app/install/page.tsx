@@ -1,8 +1,7 @@
 import { Navbar } from '../../components/Navbar';
 import { Footer } from '../../components/Footer';
 import { DownloadButton } from '../../components/DownloadButton';
-import { Download, FolderArchive, Monitor, ToggleRight, FolderOpen, CheckCircle2, AlertCircle, Github, HelpCircle } from 'lucide-react';
-import Link from 'next/link';
+import { Download, FolderArchive, Monitor, ToggleRight, FolderOpen, CheckCircle2, AlertCircle, Github, HelpCircle, FileCode, Check } from 'lucide-react';
 
 export const metadata = {
   title: 'Installation Guide — ShieldSight AI',
@@ -16,42 +15,42 @@ export default function InstallPage() {
       title: 'Download Extension ZIP',
       icon: Download,
       description: 'Get the latest ShieldSight AI extension package ZIP file.',
-      detail: 'Click the Download button to receive ShieldSightAI-v1.0.0.zip.',
+      detail: 'Click the Download button to receive ShieldSightAI-v1.0.0.zip (or the development build ZIP).',
     },
     {
       step: 'Step 2',
-      title: 'Extract the ZIP File',
+      title: 'Extract the ZIP Archive',
       icon: FolderArchive,
-      description: 'Unzip the downloaded archive on your computer.',
-      detail: 'Right-click the ZIP and select "Extract All" or double-click to unpack.',
+      description: 'Unpack the downloaded ZIP file to a folder on your computer.',
+      detail: 'Right-click the downloaded ZIP and select "Extract All" (Windows) or double-click to unzip (Mac).',
     },
     {
       step: 'Step 3',
       title: 'Open chrome://extensions',
       icon: Monitor,
-      description: 'Navigate to Chrome Extension Management.',
-      detail: 'Type chrome://extensions in your browser address bar.',
+      description: 'Open Chrome Extension Management in your browser.',
+      detail: 'Type chrome://extensions in your Chrome, Edge, or Brave address bar and press Enter.',
     },
     {
       step: 'Step 4',
       title: 'Enable Developer Mode',
       icon: ToggleRight,
       description: 'Toggle Developer Mode switch in top-right corner.',
-      detail: 'Enables loading custom extension packages.',
+      detail: 'Enables the "Load Unpacked" button required for custom extensions.',
     },
     {
       step: 'Step 5',
       title: 'Click "Load Unpacked"',
       icon: FolderOpen,
-      description: 'Select the unpacked extension directory.',
-      detail: 'Click the "Load Unpacked" button at top-left of extensions page.',
+      description: 'Click the top-left "Load Unpacked" button.',
+      detail: 'A system file picker window will open asking you to select a directory.',
     },
     {
       step: 'Step 6',
-      title: 'Select Extracted Folder',
+      title: 'Select Folder Containing manifest.json',
       icon: CheckCircle2,
-      description: 'Choose the extracted extension directory.',
-      detail: 'ShieldSight AI icon will immediately appear in your browser toolbar!',
+      description: 'Choose the exact unzipped folder containing manifest.json.',
+      detail: 'Browse to the extracted folder (or dist/ subfolder) and click Select Folder / Open.',
     },
   ];
 
@@ -80,13 +79,13 @@ export default function InstallPage() {
         </div>
 
         {/* 6-Step Visual Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-          {steps.map((item, index) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {steps.map((item) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.step}
-                className="p-6 rounded-2xl bg-[#0D1322] border border-slate-800/80 space-y-3 relative overflow-hidden"
+                className="p-6 rounded-2xl bg-[#0D1322] border border-slate-800/80 space-y-3 relative overflow-hidden text-left"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono text-slate-500 font-bold uppercase tracking-wider">
@@ -109,6 +108,69 @@ export default function InstallPage() {
               </div>
             );
           })}
+        </div>
+
+        {/* CRITICAL FOLDER SELECTION SPECIFICATION CALLOUT */}
+        <div className="p-8 rounded-2xl bg-gradient-to-b from-[#0D1322] to-[#0A0F1D] border border-blue-500/30 mb-16 text-left space-y-6 shadow-xl">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+              <FolderOpen className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-slate-100">
+                Which Exact Folder to Select?
+              </h2>
+              <p className="text-xs text-slate-400">
+                Follow this simple rule when choosing the directory in Chrome's file picker.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            {/* Scenario A: Release / Dev ZIP */}
+            <div className="p-4 rounded-xl bg-[#0B1220] border border-slate-800 space-y-2">
+              <div className="font-bold text-blue-400 flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-emerald-400" />
+                <span>Downloaded Release / Dev ZIP</span>
+              </div>
+              <p className="text-slate-300 leading-relaxed">
+                Extract the ZIP file. Open the unzipped folder until you see <code className="bg-slate-900 px-1.5 py-0.5 rounded text-blue-300 font-mono">manifest.json</code>. Select <strong>that folder</strong> (e.g. <code className="bg-slate-900 px-1.5 py-0.5 rounded text-slate-200 font-mono">ShieldSightAI-v1.0.0/</code> or <code className="bg-slate-900 px-1.5 py-0.5 rounded text-slate-200 font-mono">dist/</code>).
+              </p>
+            </div>
+
+            {/* Scenario B: Building from Source */}
+            <div className="p-4 rounded-xl bg-[#0B1220] border border-slate-800 space-y-2">
+              <div className="font-bold text-blue-400 flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-emerald-400" />
+                <span>Cloned GitHub Repository</span>
+              </div>
+              <p className="text-slate-300 leading-relaxed">
+                If you cloned the repo and ran <code className="bg-slate-900 px-1.5 py-0.5 rounded text-blue-300 font-mono">npm run build</code>, select the <strong><code className="bg-slate-900 px-1.5 py-0.5 rounded text-emerald-300 font-mono font-bold">dist/</code></strong> subfolder inside your project directory.
+              </p>
+            </div>
+          </div>
+
+          {/* Directory File Structure Diagram */}
+          <div className="p-5 rounded-xl bg-[#0B1220] border border-slate-800/80 font-mono text-xs text-slate-300 space-y-2">
+            <div className="text-slate-400 font-sans font-bold text-xs uppercase tracking-wider mb-2 flex items-center gap-2">
+              <FileCode className="w-4 h-4 text-blue-400" />
+              Target Directory File Structure:
+            </div>
+            <div className="text-emerald-400 font-bold">📁 Selected Folder (Must contain manifest.json directly inside)</div>
+            <div className="pl-4 text-slate-300">├── 📄 manifest.json  <span className="text-emerald-400 font-sans font-semibold">← CRITICAL: Must exist directly inside selected folder</span></div>
+            <div className="pl-4 text-slate-400">├── 📄 background.js</div>
+            <div className="pl-4 text-slate-400">├── 📄 content.js</div>
+            <div className="pl-4 text-slate-400">├── 📄 offscreen.html</div>
+            <div className="pl-4 text-slate-400">└── 📁 icons/</div>
+          </div>
+
+          {/* Common Mistake Callout */}
+          <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-900/40 text-xs text-amber-300 leading-relaxed flex items-start gap-3">
+            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div>
+              <strong>Common Mistake:</strong> Do NOT select a parent folder or nested subfolder that does not contain <code className="bg-amber-950 px-1.5 py-0.5 rounded font-mono text-amber-200">manifest.json</code>. If Chrome displays <em>"Manifest file is missing"</em>, you selected one level too high or too deep.
+            </div>
+          </div>
         </div>
 
         {/* Troubleshooting & Issue Support */}
