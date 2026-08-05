@@ -1,22 +1,24 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { DownloadButton } from './DownloadButton';
 import Link from 'next/link';
 
 export function Hero() {
   return (
     <section className="relative pt-36 pb-20 px-4 sm:px-6 lg:px-8 bg-[#0B1220]">
       <div className="max-w-3xl mx-auto text-center">
-        {/* Status Pill */}
+        {/* Status & Version Pill */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full border border-slate-800 bg-slate-900/60 text-slate-400 text-xs font-mono mb-6"
+          className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-800 bg-slate-900/60 text-slate-400 text-xs font-mono mb-6"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <span>On-Device AI Engine</span>
+          <span>Version 1.0.0 Beta</span>
+          <span className="text-slate-600">|</span>
+          <span className="text-slate-300">On-Device AI Engine</span>
         </motion.div>
 
         {/* Headline */}
@@ -42,20 +44,14 @@ export function Hero() {
           On-device AI protection against explicit images, graphic violence, and harmful language while keeping your browsing 100% private.
         </motion.p>
 
-        {/* Download Button */}
+        {/* Download Action Component */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.15 }}
           className="flex justify-center mb-14"
         >
-          <Link
-            href="#download"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-slate-100 hover:bg-white text-slate-950 font-semibold text-xs transition-all active:scale-[0.98]"
-          >
-            <Download className="w-4 h-4" />
-            Download Extension
-          </Link>
+          <DownloadButton variant="primary" showSubtext />
         </motion.div>
 
         {/* Essential Metrics */}

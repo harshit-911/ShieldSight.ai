@@ -1,0 +1,52 @@
+name: Build & Release Extension
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Build & Publish Release Asset
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Extension Dependencies
+        run: npm ci
+
+      - name: Run Extension Unit Tests
+        run: npm test
+
+      - name: Build Extension Production Bundle
+        run: npm run build
+
+      - name: Package Extension ZIP Asset
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          ZIP_NAME="ShieldSightAI-v${VERSION}.zip"
+          cd dist
+          zip -r "../${ZIP_NAME}" .
+          echo "ZIP_PATH=${ZIP_NAME}" >> $GITHUB_ENV
+          echo "Created package: ${ZIP_NAME}"
+
+      - name: Publish GitHub Release & Upload Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ZIP_PATH }}
+          name: ShieldSight AI v${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

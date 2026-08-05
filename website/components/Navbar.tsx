@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Shield, Download, Github, Menu, X } from 'lucide-react';
+import { Shield, Github, Menu, X } from 'lucide-react';
+import { DownloadButton } from './DownloadButton';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,13 +39,16 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link href="#features" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
+            <Link href="/#features" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
               Features
             </Link>
-            <Link href="#privacy" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
+            <Link href="/#privacy" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
               Privacy
             </Link>
-            <Link href="#faq" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
+            <Link href="/install" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
+              Install
+            </Link>
+            <Link href="/#faq" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
               FAQ
             </Link>
           </nav>
@@ -60,13 +64,7 @@ export function Navbar() {
             >
               <Github className="w-4 h-4" />
             </a>
-            <Link
-              href="#download"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-100 hover:bg-white text-slate-950 text-xs font-semibold transition-all active:scale-[0.98]"
-            >
-              <Download className="w-3 h-3" />
-              Download
-            </Link>
+            <DownloadButton variant="primary" />
           </div>
 
           {/* Mobile Menu Button */}
@@ -83,34 +81,36 @@ export function Navbar() {
         {isMobileMenuOpen && (
           <div className="md:hidden pt-4 pb-6 border-t border-slate-800/40 mt-3 flex flex-col gap-3">
             <Link
-              href="#features"
+              href="/#features"
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-xs text-slate-300 hover:text-white py-1"
             >
               Features
             </Link>
             <Link
-              href="#privacy"
+              href="/#privacy"
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-xs text-slate-300 hover:text-white py-1"
             >
               Privacy
             </Link>
             <Link
-              href="#faq"
+              href="/install"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-xs text-slate-300 hover:text-white py-1"
+            >
+              Install Guide
+            </Link>
+            <Link
+              href="/#faq"
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-xs text-slate-300 hover:text-white py-1"
             >
               FAQ
             </Link>
-            <Link
-              href="#download"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-slate-100 text-slate-950 text-xs font-semibold"
-            >
-              <Download className="w-3.5 h-3.5" />
-              Download Extension
-            </Link>
+            <div className="pt-2">
+              <DownloadButton variant="primary" className="w-full" />
+            </div>
           </div>
         )}
       </div>
