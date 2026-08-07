@@ -2,7 +2,6 @@ import { Navbar } from '../components/Navbar';
 import { Hero } from '../components/Hero';
 import { Features } from '../components/Features';
 import { PrivacyFirst } from '../components/PrivacyFirst';
-import { PresentationSection } from '../components/PresentationSection';
 import { FAQ } from '../components/FAQ';
 import { DownloadSection } from '../components/DownloadSection';
 import { Footer } from '../components/Footer';
@@ -14,7 +13,6 @@ export default function Home() {
       <Hero />
       <Features />
       <PrivacyFirst />
-      <PresentationSection />
       <FAQ />
       <DownloadSection />
       <Footer />
