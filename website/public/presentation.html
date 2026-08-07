@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ShieldSight AI — Presentation Deck</title>
+  <title>ShieldSight AI — Interactive Presentation Deck</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -30,14 +30,14 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 4px;
+      height: 5px;
       background: rgba(30, 41, 59, 0.5);
       z-index: 100;
     }
 
     .progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, #2563EB, #10B981);
+      background: linear-gradient(90deg, #3B82F6, #10B981);
       width: 0%;
       transition: width 0.3s ease;
     }
@@ -58,22 +58,25 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       background: rgba(13, 19, 34, 0.85);
-      backdrop-filter: blur(12px);
-      padding: 8px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(14px);
+      padding: 8px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(51, 65, 85, 0.6);
       pointer-events: auto;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
 
-    .brand-icon {
-      font-size: 14px;
+    .brand-svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
     }
 
     .brand-title {
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 800;
       letter-spacing: -0.02em;
     }
 
@@ -93,20 +96,20 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       background: rgba(13, 19, 34, 0.85);
-      backdrop-filter: blur(12px);
-      padding: 8px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(14px);
+      padding: 8px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(51, 65, 85, 0.6);
       color: #94A3B8;
     }
 
     .control-btn {
       background: rgba(13, 19, 34, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
       color: #CBD5E1;
-      padding: 8px 16px;
-      border-radius: 12px;
+      padding: 8px 18px;
+      border-radius: 14px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
@@ -119,7 +122,7 @@
       border-color: #3B82F6;
     }
 
-    /* Slide Engine */
+    /* Slide Container */
     .deck-container {
       width: 100%;
       height: 100vh;
@@ -132,7 +135,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      padding: 100px 90px 80px 90px;
+      padding: 95px 80px 75px 80px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -148,158 +151,265 @@
       transform: scale(1) translateY(0);
     }
 
-    /* Components */
+    /* Component Styling */
     .tag {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 14px;
+      padding: 5px 16px;
       border-radius: 9999px;
       background: rgba(30, 41, 59, 0.7);
-      border: 1px solid rgba(51, 65, 85, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.3);
       color: #38BDF8;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
-      font-weight: 600;
-      margin-bottom: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
       width: fit-content;
     }
 
     .slide-title {
-      font-size: 44px;
+      font-size: 42px;
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.15;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       background: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .slide-subtitle {
-      font-size: 18px;
+      font-size: 17px;
       color: #94A3B8;
       font-weight: 400;
       line-height: 1.5;
       max-width: 750px;
-      margin-bottom: 38px;
+      margin-bottom: 32px;
     }
 
-    /* Layout Grids */
+    /* Grids */
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 28px;
+      gap: 24px;
     }
 
     .grid-3 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 24px;
+      gap: 20px;
     }
 
     .grid-4 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
     }
 
-    /* Clean Uncluttered Cards */
+    /* Visual Graphic Cards */
     .card {
       background: #0D1322;
-      border: 1px solid rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(30, 41, 59, 0.9);
       border-radius: 20px;
-      padding: 28px;
+      padding: 24px;
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
-    .card-highlight {
+    .card-highlight-blue {
       border-color: rgba(59, 130, 246, 0.4);
-      background: linear-gradient(180deg, #0D1322 0%, #0A0F1D 100%);
+      background: linear-gradient(180deg, #0D1322 0%, #080D1A 100%);
     }
 
-    .card-icon {
-      font-size: 28px;
-      margin-bottom: 12px;
+    .card-highlight-green {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: linear-gradient(180deg, #0D1322 0%, #061217 100%);
+    }
+
+    .card-highlight-red {
+      border-color: rgba(244, 63, 94, 0.4);
+      background: linear-gradient(180deg, #0D1322 0%, #17070B 100%);
+    }
+
+    .card-header-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(30, 41, 59, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .card-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: #F8FAFC;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .card-text {
-      font-size: 14px;
+      font-size: 13px;
       color: #94A3B8;
       line-height: 1.6;
     }
 
-    /* Simple List */
-    .simple-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    /* Graphical Flow Pipeline Diagram */
+    .flow-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      position: relative;
     }
 
-    .simple-list li {
-      font-size: 14px;
-      color: #CBD5E1;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
+    .flow-node {
+      background: #0D1322;
+      border: 1px solid rgba(30, 41, 59, 0.9);
+      border-radius: 18px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .flow-node-step {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.12);
+      padding: 3px 10px;
+      border-radius: 9999px;
+      width: fit-content;
+      margin-bottom: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .flow-node-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #F8FAFC;
+      margin-bottom: 6px;
+    }
+
+    .flow-node-desc {
+      font-size: 12px;
+      color: #94A3B8;
       line-height: 1.5;
     }
 
-    .simple-list li .bullet {
-      color: #10B981;
-      font-weight: 700;
-    }
-
-    /* Flow Step */
-    .step-box {
+    /* Benchmark Comparison Graphic Bars */
+    .bar-comparison-container {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       gap: 18px;
-      background: #0D1322;
-      border: 1px solid #1E293B;
-      padding: 18px 24px;
-      border-radius: 16px;
+      margin-top: 10px;
     }
 
-    .step-num {
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
-      background: #1E293B;
-      color: #10B981;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      font-weight: 700;
+    .bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .bar-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .bar-track {
+      height: 28px;
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(51, 65, 85, 0.5);
+    }
+
+    .bar-fill-red {
+      height: 100%;
+      background: linear-gradient(90deg, #F43F5E, #E11D48);
+      width: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .step-title {
-      font-size: 16px;
+      padding-left: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
       font-weight: 700;
-      color: #F8FAFC;
+      color: #FFF;
     }
 
-    .step-desc {
-      font-size: 13px;
-      color: #94A3B8;
-      margin-top: 2px;
+    .bar-fill-green {
+      height: 100%;
+      background: linear-gradient(90deg, #10B981, #059669);
+      width: 8%;
+      display: flex;
+      align-items: center;
+      padding-left: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: #FFF;
+      min-width: 90px;
+    }
+
+    /* Mock Extension Graphic Card */
+    .mock-popup {
+      background: #0D1322;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+    }
+
+    .mock-popup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+      margin-bottom: 16px;
+    }
+
+    .mock-power-card {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .mock-toggle {
+      width: 44px;
+      height: 24px;
+      background: #10B981;
+      border-radius: 9999px;
+      position: relative;
+    }
+
+    .mock-toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 20px;
+      height: 20px;
+      background: #FFF;
+      border-radius: 9999px;
     }
 
     /* Footer Nav */
     .deck-footer {
       position: fixed;
-      bottom: 24px;
+      bottom: 22px;
       left: 0;
       width: 100%;
       display: flex;
@@ -311,8 +421,8 @@
 
     .nav-btn {
       background: rgba(13, 19, 34, 0.9);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(51, 65, 85, 0.8);
       color: #F8FAFC;
       width: 44px;
       height: 44px;
@@ -341,10 +451,10 @@
       align-items: center;
       gap: 8px;
       background: rgba(13, 19, 34, 0.9);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
       padding: 10px 20px;
       border-radius: 9999px;
-      border: 1px solid rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(51, 65, 85, 0.8);
     }
 
     .dot {
@@ -360,6 +470,20 @@
       background: #3B82F6;
       width: 24px;
     }
+
+    /* Tag Pills */
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(51, 65, 85, 0.8);
+      color: #CBD5E1;
+    }
   </style>
 </head>
 <body>
@@ -372,7 +496,11 @@
   <!-- Header -->
   <div class="deck-header">
     <div class="brand">
-      <div class="brand-icon">🛡️</div>
+      <svg class="brand-svg" viewBox="0 0 24 24">
+        <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-5.45 8-12V6l-8-4z" fill="#3B82F6" opacity="0.3"/>
+        <path d="M12 4L6 7v5c0 4.2 2.9 8.1 6 9.1 3.1-1 6-4.9 6-9.1V7l-6-3z" stroke="#3B82F6" stroke-width="1.5"/>
+        <circle cx="12" cy="11" r="3" fill="#10B981"/>
+      </svg>
       <div class="brand-title">ShieldSight <span>AI</span></div>
     </div>
     <div class="header-controls">
@@ -381,32 +509,47 @@
     </div>
   </div>
 
-  <!-- Slide Container -->
+  <!-- Slide Deck -->
   <div class="deck-container">
 
     <!-- SLIDE 1: Title & Hero -->
     <div class="slide active">
-      <div class="tag">PROJECT PRESENTATION</div>
+      <div class="tag">🛡️ PROJECT DEFENSE PRESENTATION</div>
       <h1 class="slide-title">ShieldSight AI</h1>
       <p class="slide-subtitle">
-        On-Device Artificial Intelligence Content Moderation & Parental Safety Platform
+        Privacy-Preserving On-Device AI Content Moderation & Parental Safety Platform
       </p>
 
-      <div class="grid-3" style="max-width: 950px; margin-bottom: 36px;">
-        <div class="card card-highlight">
-          <div class="card-icon">🔒</div>
-          <div class="card-title">100% Private</div>
-          <div class="card-text">All AI processing runs locally inside your browser. Zero data sent to servers.</div>
+      <div class="grid-3" style="max-width: 960px; margin-bottom: 36px;">
+        <div class="card card-highlight-green">
+          <div class="card-header-icon" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <div class="card-title">100% On-Device Isolation</div>
+          <div class="card-text">All AI processing executes locally inside Chrome browser memory. Zero user photos or chat logs sent off-device.</div>
         </div>
-        <div class="card card-highlight">
-          <div class="card-icon">⚡</div>
-          <div class="card-title">Sub-30ms Speed</div>
-          <div class="card-text">Hardware-accelerated AI models classify images and text in milliseconds.</div>
+
+        <div class="card card-highlight-blue">
+          <div class="card-header-icon" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <div class="card-title">Sub-30ms Inference</div>
+          <div class="card-text">ONNX Runtime Web with WebGL shader acceleration delivers instant image and text classification.</div>
         </div>
-        <div class="card card-highlight">
-          <div class="card-icon">💰</div>
-          <div class="card-title">Zero Server Cost</div>
-          <div class="card-text">No expensive cloud API subscriptions needed. Runs directly on the user's device.</div>
+
+        <div class="card card-highlight-blue">
+          <div class="card-header-icon" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="card-title">Tri-Modal AI Fusion</div>
+          <div class="card-text">Simultaneously evaluates Computer Vision (ONNX), Multilingual NLP, and WebAssembly OCR.</div>
         </div>
       </div>
 
@@ -415,197 +558,250 @@
       </div>
     </div>
 
-    <!-- SLIDE 2: Problem vs Solution -->
+    <!-- SLIDE 2: Problem vs Solution Graphical Bar -->
     <div class="slide">
-      <div class="tag">01. THE PROBLEM WE SOLVED</div>
-      <h2 class="slide-title">Why On-Device AI is Better</h2>
-      <p class="slide-subtitle">Traditional parental control software sends private user data to cloud APIs, causing privacy concerns and slow page loads.</p>
+      <div class="tag">01. PERFORMANCE & PRIVACY COMPARISON</div>
+      <h2 class="slide-title">Traditional Cloud APIs vs ShieldSight AI</h2>
+      <p class="slide-subtitle">Cloud APIs introduce latency and privacy leaks. ShieldSight AI brings neural models directly onto the client device.</p>
 
       <div class="grid-2">
-        <div class="card" style="border-color: rgba(244, 63, 94, 0.3);">
-          <div class="card-title" style="color: #F43F5E;">❌ Traditional Cloud Filters</div>
-          <ul class="simple-list" style="margin-top: 16px;">
-            <li><span class="bullet" style="color: #F43F5E;">•</span> Sends private photos, chat logs & history to third-party servers.</li>
-            <li><span class="bullet" style="color: #F43F5E;">•</span> Slow network latency (300ms–1000ms delay per webpage request).</li>
-            <li><span class="bullet" style="color: #F43F5E;">•</span> High cloud infrastructure and API subscription costs.</li>
+        <div class="card card-highlight-red">
+          <div class="card-title" style="color: #F43F5E; display: flex; align-items: center; gap: 8px;">
+            <span>⚠️ Traditional Cloud API Filters</span>
+          </div>
+          <ul style="font-size: 13px; color: #94A3B8; line-height: 1.8; padding-left: 18px; margin-top: 10px; margin-bottom: 16px;">
+            <li>Transmits private browsing photos and chat logs to cloud endpoints.</li>
+            <li>High network latency (300ms–1000ms delay per API request).</li>
+            <li>Expensive cloud server infrastructure and API subscriptions.</li>
           </ul>
+
+          <div class="bar-comparison-container">
+            <div class="bar-item">
+              <div class="bar-info">
+                <span style="color: #F43F5E;">Cloud API Latency</span>
+                <span style="color: #F43F5E;">350ms – 1000ms</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill-red">350ms - 1000ms Delay</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="card" style="border-color: rgba(16, 185, 129, 0.3);">
-          <div class="card-title" style="color: #10B981;">✅ ShieldSight AI (On-Device)</div>
-          <ul class="simple-list" style="margin-top: 16px;">
-            <li><span class="bullet">•</span> 100% local processing inside browser memory. Zero privacy leaks.</li>
-            <li><span class="bullet">•</span> Blazing fast sub-30ms AI classification using GPU acceleration.</li>
-            <li><span class="bullet">•</span> Completely free to operate with zero server infrastructure overhead.</li>
+        <div class="card card-highlight-green">
+          <div class="card-title" style="color: #10B981; display: flex; align-items: center; gap: 8px;">
+            <span>🛡️ ShieldSight AI (On-Device WebGL)</span>
+          </div>
+          <ul style="font-size: 13px; color: #94A3B8; line-height: 1.8; padding-left: 18px; margin-top: 10px; margin-bottom: 16px;">
+            <li>100% local processing inside browser memory. Zero data leaks.</li>
+            <li>Sub-30ms classification using WebGL shader acceleration.</li>
+            <li>Zero server operation costs. Runs entirely on client hardware.</li>
           </ul>
+
+          <div class="bar-comparison-container">
+            <div class="bar-item">
+              <div class="bar-info">
+                <span style="color: #10B981;">ShieldSight AI WebGL Latency</span>
+                <span style="color: #10B981;">~26ms</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill-green">~26ms</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 3: Tri-Modal AI Engines -->
+    <!-- SLIDE 3: Tri-Modal AI Architecture Diagram -->
     <div class="slide">
-      <div class="tag">02. MULTIMODAL AI ENGINES</div>
-      <h2 class="slide-title">3 AI Safety Engines in One</h2>
+      <div class="tag">02. TRI-MODAL AI ARCHITECTURE</div>
+      <h2 class="slide-title">3 Multimodal AI Safety Engines</h2>
       <p class="slide-subtitle">ShieldSight AI combines three AI techniques to protect against all forms of harmful media.</p>
 
       <div class="grid-3">
-        <div class="card">
-          <div class="card-icon">👁️</div>
-          <div class="card-title">1. Vision Engine</div>
+        <div class="card card-highlight-blue">
+          <div class="card-header-icon" style="background: rgba(59, 130, 246, 0.15);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 8v4l3 3"/>
+            </svg>
+          </div>
+          <div class="card-title">1. Computer Vision (ONNX)</div>
           <div class="card-text">
-            Runs computer vision neural models (ONNX WebGL) to detect explicit/adult images and graphic violence.
+            Dual ONNX neural models (<code>opennsfw2.onnx</code> & <code>violence.onnx</code>) classifying explicit imagery and graphic violent scenes in <strong>~26ms</strong>.
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-icon">💬</div>
-          <div class="card-title">2. Language Engine</div>
+        <div class="card card-highlight-blue">
+          <div class="card-header-icon" style="background: rgba(16, 185, 129, 0.15);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div class="card-title">2. Multilingual NLP Filter</div>
           <div class="card-text">
-            NLP text filter supporting <strong>English</strong>, <strong>Hinglish</strong>, and <strong>Devanagari Hindi (हिंदी)</strong> toxicity detection.
+            Natural Language Processing engine supporting <strong>English</strong>, <strong>Romanized Hinglish</strong>, and <strong>Devanagari Hindi (हिंदी)</strong>.
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-icon">🔤</div>
+        <div class="card card-highlight-blue">
+          <div class="card-header-icon" style="background: rgba(245, 158, 11, 0.15);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <path d="M7 7h10M7 12h10M7 17h6"/>
+            </svg>
+          </div>
           <div class="card-title">3. WASM OCR Engine</div>
           <div class="card-text">
-            Extracts text hidden inside images (memes, text banners) and checks it for toxic content.
+            <strong>Tesseract.js compiled to WebAssembly</strong> extracting text embedded inside images (memes, text banners) and feeding it into the NLP engine.
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 4: How It Works (4 Steps) -->
+    <!-- SLIDE 4: Graphical Execution Flow Pipeline -->
     <div class="slide">
-      <div class="tag">03. HOW IT WORKS</div>
-      <h2 class="slide-title">Execution Steps in 4 Easy Steps</h2>
-      <p class="slide-subtitle">Seamless, real-time protection while you browse any webpage.</p>
+      <div class="tag">03. SYSTEM EXECUTION PIPELINE</div>
+      <h2 class="slide-title">4-Step Real-Time Protection Flow</h2>
+      <p class="slide-subtitle">Decoupled execution pipeline bypassing Service Worker limits via Chrome Offscreen Documents.</p>
 
-      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 900px;">
-        <div class="step-box">
-          <div class="step-num">1</div>
-          <div>
-            <div class="step-title">Page Scan</div>
-            <div class="step-desc">Automatically scans text blocks and images as you scroll through any webpage.</div>
-          </div>
+      <div class="flow-container">
+        <div class="flow-node">
+          <div class="flow-node-step">STEP 01</div>
+          <div class="flow-node-title">DOM Scanning</div>
+          <div class="flow-node-desc">MutationObserver automatically discovers text nodes, subframes, and images as you scroll any webpage.</div>
         </div>
-        <div class="step-box">
-          <div class="step-num">2</div>
-          <div>
-            <div class="step-title">On-Device AI Inference</div>
-            <div class="step-desc">Runs neural network models locally using WebGL GPU hardware acceleration.</div>
-          </div>
+
+        <div class="flow-node">
+          <div class="flow-node-step">STEP 02</div>
+          <div class="flow-node-title">Offscreen AI Route</div>
+          <div class="flow-node-desc">Sends image buffers and text streams into Chrome's Offscreen Document context via Extension Messaging.</div>
         </div>
-        <div class="step-box">
-          <div class="step-num">3</div>
-          <div>
-            <div class="step-title">Safety Score Assessment</div>
-            <div class="step-desc">Calculates safety probability scores in under 30 milliseconds.</div>
-          </div>
+
+        <div class="flow-node">
+          <div class="flow-node-step">STEP 03</div>
+          <div class="flow-node-title">WebGL GPU Execution</div>
+          <div class="flow-node-desc">Executes ONNX Runtime WebGL GPU tensor operations and WebAssembly OCR threads in under 30ms.</div>
         </div>
-        <div class="step-box">
-          <div class="step-num">4</div>
-          <div>
-            <div class="step-title">Instant Redaction & Safety Badge</div>
-            <div class="step-desc">Blurs toxic content and places a non-intrusive 🛡️ "Sensitive Language Hidden" badge.</div>
-          </div>
+
+        <div class="flow-node">
+          <div class="flow-node-step">STEP 04</div>
+          <div class="flow-node-title">Dynamic Redaction</div>
+          <div class="flow-node-desc">Applies CSS backdrop-filter blur and attaches an interactive 🛡️ "Sensitive Language Hidden" safety badge.</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 5: Technology Stack -->
+    <!-- SLIDE 5: Technology Stack Graphic Matrix -->
     <div class="slide">
-      <div class="tag">04. TECH STACK</div>
-      <h2 class="slide-title">Technology Stack</h2>
-      <p class="slide-subtitle">Built with modern web technologies and client-side machine learning frameworks.</p>
+      <div class="tag">04. TECHNOLOGY STACK</div>
+      <h2 class="slide-title">Technology Stack Matrix</h2>
+      <p class="slide-subtitle">Built with modern web technologies, client-side machine learning, and Next.js 15.</p>
 
       <div class="grid-3">
         <div class="card">
-          <div class="card-icon">⚡</div>
-          <div class="card-title">Chrome Extension</div>
-          <ul class="simple-list" style="margin-top: 10px;">
-            <li><span class="bullet">•</span> React 19 & TypeScript</li>
-            <li><span class="bullet">•</span> Vite 5.4 Build Pipeline</li>
-            <li><span class="bullet">•</span> Manifest V3 Architecture</li>
-          </ul>
+          <div class="card-title">🧩 Extension Architecture</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
+            <div class="pill-tag">⚛️ React 19 UI</div>
+            <div class="pill-tag">📘 TypeScript 5.7</div>
+            <div class="pill-tag">⚡ Vite 5.4 Build Engine</div>
+            <div class="pill-tag">🧩 Chrome Manifest V3</div>
+          </div>
         </div>
 
         <div class="card">
-          <div class="card-icon">🧠</div>
-          <div class="card-title">AI & ML Runtimes</div>
-          <ul class="simple-list" style="margin-top: 10px;">
-            <li><span class="bullet">•</span> ONNX Runtime WebGL</li>
-            <li><span class="bullet">•</span> Tesseract OCR (WebAssembly)</li>
-            <li><span class="bullet">•</span> Dual Neural Models</li>
-          </ul>
+          <div class="card-title">🧠 AI & Machine Learning</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
+            <div class="pill-tag">🎮 ONNX Runtime Web (WebGL)</div>
+            <div class="pill-tag">🔤 Tesseract OCR (WebAssembly)</div>
+            <div class="pill-tag">🖼️ OpenNSFW2 Caffe Model</div>
+            <div class="pill-tag">🛡️ Custom Violence Classifier</div>
+          </div>
         </div>
 
         <div class="card">
-          <div class="card-icon">🌐</div>
-          <div class="card-title">Web Platform</div>
-          <ul class="simple-list" style="margin-top: 10px;">
-            <li><span class="bullet">•</span> Next.js 15 (App Router)</li>
-            <li><span class="bullet">•</span> Tailwind CSS 3.4</li>
-            <li><span class="bullet">•</span> Hosted on Vercel Edge</li>
-          </ul>
+          <div class="card-title">🌐 Commercial Web Platform</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
+            <div class="pill-tag">🌐 Next.js 15 (App Router)</div>
+            <div class="pill-tag">🎨 Tailwind CSS 3.4</div>
+            <div class="pill-tag">🚀 Vercel Edge Deployment</div>
+            <div class="pill-tag">📦 Download & Install Guides</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 6: Multilingual Support -->
+    <!-- SLIDE 6: Multilingual Support Graphic Tags -->
     <div class="slide">
       <div class="tag">05. MULTILINGUAL SAFETY</div>
       <h2 class="slide-title">English, Hinglish & Hindi Protection</h2>
-      <p class="slide-subtitle">Understands regional language inflections, slang, and Devanagari script.</p>
+      <p class="slide-subtitle">Understands regional language inflections, Indian slang, and native Devanagari script.</p>
 
       <div class="grid-2">
         <div class="card">
-          <div class="card-title">🇮🇳 Supported Languages & Scripts</div>
-          <ul class="simple-list" style="margin-top: 14px;">
-            <li><span class="bullet">•</span> <strong>English:</strong> Standard cyberbullying & harassment filter.</li>
-            <li><span class="bullet">•</span> <strong>Romanized Hinglish:</strong> Catching Indian slang (e.g., <em>chutiya</em>, <em>bhosdike</em>, <em>gandu</em>).</li>
-            <li><span class="bullet">•</span> <strong>Devanagari Hindi (हिंदी):</strong> Native script moderation (e.g., <em>चूतिया</em>, <em>मादरचोद</em>, <em>गधा</em>).</li>
-            <li><span class="bullet">•</span> <strong>Leetspeak Obfuscation:</strong> Handles masked words like <em>chut!ya</em>, <em>b*osdike</em>.</li>
-          </ul>
+          <div class="card-title">🇮🇳 Supported Script & Language Tags</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; margin-bottom: 16px;">
+            <div class="pill-tag">🇬🇧 English Filter</div>
+            <div class="pill-tag">🇮🇳 Romanized Hinglish</div>
+            <div class="pill-tag">🇮🇳 Devanagari Hindi (हिंदी)</div>
+            <div class="pill-tag">🔤 Leetspeak Obfuscation</div>
+          </div>
+
+          <div style="font-size: 12px; color: #94A3B8; line-height: 1.6;">
+            <strong>Example Matches:</strong> <code>chutiya</code>, <code>bhosdike</code>, <code>gandu</code>, <code>चूतिया</code>, <code>मादरचोद</code>, <code>गधा</code>, <code>chut!ya</code>, <code>b*osdike</code>.
+          </div>
         </div>
 
-        <div class="card card-highlight">
+        <div class="card card-highlight-blue">
           <div class="card-title">🎯 Why This Matters</div>
           <div class="card-text" style="font-size: 14px; line-height: 1.7; margin-top: 12px;">
-            Most commercial extension filters only work for plain English. ShieldSight AI is specifically designed to protect multi-lingual users across India and global communities who use Hinglish and regional scripts on social media and chat apps.
+            Most commercial extension filters only work for standard English. ShieldSight AI is specifically designed to protect multi-lingual users across India and global communities who use Hinglish and regional scripts on social media, YouTube comments, and chat apps.
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 7: Extension Controls -->
+    <!-- SLIDE 7: Extension Popup Mock UI Graphic -->
     <div class="slide">
-      <div class="tag">06. USER FEATURES</div>
-      <h2 class="slide-title">Extension Popup Controls</h2>
-      <p class="slide-subtitle">Simple, intuitive controls for parents and users.</p>
+      <div class="tag">06. USER INTERFACE</div>
+      <h2 class="slide-title">Extension Popup Control Center</h2>
+      <p class="slide-subtitle">Minimalist consumer control card featuring real-time Master Power Switch and sensitivity modes.</p>
 
-      <div class="grid-3">
-        <div class="card">
-          <div class="card-icon">🟢</div>
-          <div class="card-title">Master Power Switch</div>
-          <div class="card-text">
-            Turn protection ON or OFF with 1 click. Instantly syncs state across all open browser tabs.
+      <div class="grid-2">
+        <div class="mock-popup">
+          <div class="mock-popup-header">
+            <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px;">
+              <span>🛡️ ShieldSight AI</span>
+            </div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10B981; background: rgba(16, 185, 129, 0.15); padding: 2px 8px; border-radius: 6px;">
+              v1.0.0 ACTIVE
+            </div>
+          </div>
+
+          <div class="mock-power-card">
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #F8FAFC;">🟢 Protection Active</div>
+              <div style="font-size: 11px; color: #94A3B8;">Real-time AI moderation ON</div>
+            </div>
+            <div class="mock-toggle"></div>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <div style="flex: 1; background: #1E293B; border: 1px solid #3B82F6; color: #3B82F6; text-align: center; padding: 6px; border-radius: 8px; font-size: 11px; font-weight: 700;">Standard</div>
+            <div style="flex: 1; background: #0F172A; color: #64748B; text-align: center; padding: 6px; border-radius: 8px; font-size: 11px;">Child Safe</div>
+            <div style="flex: 1; background: #0F172A; color: #64748B; text-align: center; padding: 6px; border-radius: 8px; font-size: 11px;">Maximum</div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-icon">🎚️</div>
-          <div class="card-title">3 Protection Modes</div>
-          <div class="card-text">
-            Choose between <strong>Standard</strong>, <strong>Child Safe</strong>, and <strong>Maximum Protection</strong> sensitivity levels.
+        <div style="display: flex; flex-direction: column; gap: 16px; justify-content: center;">
+          <div class="card">
+            <div class="card-title">⚡ Master Power Switch</div>
+            <div class="card-text">Instant 1-click toggle switch to pause or resume AI protection across all active browser tabs in real-time.</div>
           </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">👁️</div>
-          <div class="card-title">Interactive "Reveal" Button</div>
-          <div class="card-text">
-            Allows parents or users to optionally click "Reveal" to temporarily unblur hidden text or images.
+          <div class="card">
+            <div class="card-title">👁️ Interactive "Reveal" Option</div>
+            <div class="card-text">Allows parents or users to optionally click "Reveal" on safety badges to unblur hidden content.</div>
           </div>
         </div>
       </div>
@@ -618,25 +814,25 @@
       <p class="slide-subtitle">ShieldSight AI proves that content moderation can be fast, powerful, and 100% private.</p>
 
       <div class="grid-3" style="margin-bottom: 32px;">
-        <div class="card card-highlight">
+        <div class="card card-highlight-green">
           <div class="card-title">🔒 Absolute Privacy</div>
           <div class="card-text">No user data, chat logs, or images ever leave your device.</div>
         </div>
 
-        <div class="card card-highlight">
+        <div class="card card-highlight-blue">
           <div class="card-title">⚡ Sub-30ms Speed</div>
           <div class="card-text">Runs local WebGL AI models faster than cloud APIs.</div>
         </div>
 
-        <div class="card card-highlight">
+        <div class="card card-highlight-blue">
           <div class="card-title">🇮🇳 Multilingual</div>
           <div class="card-text">Full support for English, Romanized Hinglish, and Hindi (हिंदी).</div>
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 20px;">
+      <div style="text-align: center; margin-top: 16px;">
         <h3 style="font-size: 28px; font-weight: 800; color: #F8FAFC;">Thank You!</h3>
-        <p style="font-size: 15px; color: #94A3B8; margin-top: 6px;">Questions & Evaluation</p>
+        <p style="font-size: 15px; color: #94A3B8; margin-top: 6px;">Questions & Academic Project Evaluation</p>
       </div>
     </div>
 
