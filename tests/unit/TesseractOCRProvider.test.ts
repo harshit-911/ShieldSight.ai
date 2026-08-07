@@ -50,9 +50,9 @@ describe('TesseractOCRProvider Unit Tests', () => {
     document.body.innerHTML = '';
   });
 
-  it('should skip OCR if image resolution is below 150x150', async () => {
+  it('should skip OCR if image resolution is below 80x80', async () => {
     const provider = new TesseractOCRProvider();
-    const lowResImg = createMockImage('lowres-1', 100, 100);
+    const lowResImg = createMockImage('lowres-1', 50, 50);
 
     const result = await provider.recognize(lowResImg);
     expect(result.extractedText).toBe('');

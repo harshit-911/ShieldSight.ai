@@ -127,7 +127,7 @@ export class AIOrchestrator implements IImageClassifier {
     let textConfidence = 0.0;
     const ocrText = ocrRes?.extractedText || '';
 
-    if (ocrText && ocrText.length >= 5) {
+    if (ocrText && ocrText.length >= 2) {
       try {
         const toxResult = await toxicityClassifier.classify({
           id: `ocr-text-${image.id}`,

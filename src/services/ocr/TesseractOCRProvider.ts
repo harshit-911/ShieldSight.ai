@@ -89,13 +89,13 @@ export class TesseractOCRProvider implements OCRProvider {
     const startTime = performance.now();
     const imgEl = image.element;
 
-    // 1. Resolution Guard: Skip if image resolution is below 150x150
+    // 1. Resolution Guard: Skip if image resolution is below 80x80
     const width = image.naturalWidth || imgEl.clientWidth || imgEl.width || 0;
     const height = image.naturalHeight || imgEl.clientHeight || imgEl.height || 0;
 
-    if (width < 150 || height < 150) {
+    if (width < 80 || height < 80) {
       this.metrics.skippedLowResCount += 1;
-      return this.createEmptyResult(image.id, 'Image resolution below 150x150 threshold');
+      return this.createEmptyResult(image.id, 'Image resolution below 80x80 threshold');
     }
 
     // 2. Duplicate Guard: Skip if already processed
@@ -123,7 +123,12 @@ export class TesseractOCRProvider implements OCRProvider {
 
       if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
         logger.info(`[ShieldSight OCR] Delegating OCR task to Background Service Worker for: ${image.id}`);
-        const dataUrl = (canvas as HTMLCanvasElement).toDataURL('image/png');
+        let dataUrl = '';
+        try {
+          dataUrl = (canvas as HTMLCanvasElement).toDataURL('image/png');
+        } catch {
+          dataUrl = image.src;
+        }
 
         const response = await new Promise<any>((resolve, reject) => {
           chrome.runtime.sendMessage(
