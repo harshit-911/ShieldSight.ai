@@ -37,6 +37,9 @@ export function Footer() {
                 <Link href="/#privacy" className="hover:text-slate-200 transition-colors">Privacy</Link>
               </li>
               <li>
+                <Link href="/presentation.html" target="_blank" className="hover:text-slate-200 transition-colors">Slide Deck ↗</Link>
+              </li>
+              <li>
                 <Link href="/install" className="hover:text-slate-200 transition-colors">Installation Guide</Link>
               </li>
               <li>
