@@ -123,18 +123,12 @@ export class TesseractOCRProvider implements OCRProvider {
 
       if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
         logger.info(`[ShieldSight OCR] Delegating OCR task to Background Service Worker for: ${image.id}`);
-        let dataUrl = '';
-        try {
-          dataUrl = (canvas as HTMLCanvasElement).toDataURL('image/png');
-        } catch {
-          dataUrl = image.src;
-        }
 
         const response = await new Promise<any>((resolve, reject) => {
           chrome.runtime.sendMessage(
             {
               type: 'RUN_OCR',
-              payload: { dataUrl },
+              payload: { imageSrc: image.src },
             },
             (res) => {
               if (chrome.runtime.lastError) {

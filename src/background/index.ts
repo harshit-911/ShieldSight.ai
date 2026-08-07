@@ -19,7 +19,6 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 
 // Helper to ensure Offscreen Document is instantiated
 async function createOffscreenDocument(): Promise<void> {
-  // Fallback hasDocument check
   if (await chrome.offscreen.hasDocument()) {
     return;
   }
@@ -27,13 +26,13 @@ async function createOffscreenDocument(): Promise<void> {
   console.log('[ShieldSight Background] Creating Offscreen Document for OCR tasks...');
   await chrome.offscreen.createDocument({
     url: 'offscreen.html',
-    reasons: [chrome.offscreen.Reason.DOM_PARSER],
+    reasons: [chrome.offscreen.Reason.BLOBS, chrome.offscreen.Reason.DOM_PARSER],
     justification: 'Run Tesseract OCR engine in DOM context with Web Workers support',
   });
 }
 
 // Proxies OCR request to Offscreen Document DOM context (with retry loop to prevent race conditions during startup)
-async function runOCROffscreenViaDocument(dataUrl: string): Promise<any> {
+async function runOCROffscreenViaDocument(imageSrc: string): Promise<any> {
   await createOffscreenDocument();
 
   for (let i = 0; i < 6; i++) {
@@ -42,7 +41,7 @@ async function runOCROffscreenViaDocument(dataUrl: string): Promise<any> {
         chrome.runtime.sendMessage(
           {
             type: 'RUN_OCR_OFFSCREEN',
-            payload: { dataUrl },
+            payload: { imageSrc },
           },
           (res) => {
             if (chrome.runtime.lastError) {
@@ -62,7 +61,6 @@ async function runOCROffscreenViaDocument(dataUrl: string): Promise<any> {
       if (i === 5) {
         throw err;
       }
-      // Delay before next attempt to allow Offscreen Document loading to complete
       await new Promise((r) => setTimeout(r, 200));
     }
   }
@@ -72,17 +70,15 @@ async function runOCROffscreenViaDocument(dataUrl: string): Promise<any> {
 chrome.runtime.onMessage.addListener(
   (
     message: any,
-    sender: chrome.runtime.MessageSender,
+    _sender: chrome.runtime.MessageSender,
     sendResponse: (response?: unknown) => void
   ) => {
-    console.log('[ShieldSight AI Background] Received message from:', sender.id || 'internal', message.type);
-
     switch (message.type) {
       case 'GET_PROTECTION_STATUS':
         storageService.getProtectionStatus().then((enabled) => {
           sendResponse({ enabled });
         });
-        return true; // Keep channel open for async response
+        return true;
 
       case 'TOGGLE_PROTECTION':
         storageService.setProtectionStatus(message.payload.enabled).then(() => {
@@ -91,8 +87,8 @@ chrome.runtime.onMessage.addListener(
         return true;
 
       case 'RUN_OCR':
-        if (message.payload && message.payload.dataUrl) {
-          runOCROffscreenViaDocument(message.payload.dataUrl)
+        if (message.payload && message.payload.imageSrc) {
+          runOCROffscreenViaDocument(message.payload.imageSrc)
             .then((res) => {
               sendResponse(res);
             })
@@ -100,9 +96,8 @@ chrome.runtime.onMessage.addListener(
               console.error('[ShieldSight Background OCR Proxy] Error:', err);
               sendResponse({ error: err.message || String(err) });
             });
-          return true; // Keep channel open for async response
+          return true;
         }
-        sendResponse({ error: 'Missing dataUrl payload' });
         break;
 
       default:

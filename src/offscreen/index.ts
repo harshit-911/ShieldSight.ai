@@ -1,7 +1,7 @@
 /**
  * ShieldSight AI - Offscreen Document Task Processor
  * Runs Tesseract.js OCR inside a real DOM window context to bypass MV3 Service Worker limitations.
- * Uses a persistent cached Singleton Worker session to eliminate WASM re-initialization overhead.
+ * Uses a persistent cached Singleton Worker session and contrast-enhanced canvas drawing.
  */
 
 import { createWorker, Worker } from 'tesseract.js';
@@ -43,11 +43,58 @@ async function getOCRWorker(): Promise<Worker> {
   return workerPromise;
 }
 
+/**
+ * Renders an image URL onto an untainted, contrast-enhanced canvas for Tesseract recognition.
+ */
+async function prepareCanvasFromSrc(imageSrc: string, targetWidth = 300, targetHeight = 300): Promise<HTMLCanvasElement> {
+  const canvas = document.createElement('canvas');
+  canvas.width = targetWidth;
+  canvas.height = targetHeight;
+  const ctx = canvas.getContext('2d');
+
+  if (!ctx) return canvas;
+
+  if (imageSrc.startsWith('data:')) {
+    const img = new Image();
+    img.src = imageSrc;
+    await new Promise<void>((r) => { img.onload = () => r(); img.onerror = () => r(); });
+    if ('filter' in ctx) ctx.filter = 'contrast(1.3) brightness(1.05)';
+    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+    return canvas;
+  }
+
+  try {
+    const response = await fetch(imageSrc);
+    const blob = await response.blob();
+    const bitmap = await createImageBitmap(blob);
+    if ('filter' in ctx) ctx.filter = 'contrast(1.3) brightness(1.05)';
+    ctx.drawImage(bitmap, 0, 0, targetWidth, targetHeight);
+    if (typeof bitmap.close === 'function') bitmap.close();
+    return canvas;
+  } catch {
+    try {
+      const cleanImg = new Image();
+      cleanImg.crossOrigin = 'anonymous';
+      await new Promise<void>((r) => {
+        cleanImg.onload = () => r();
+        cleanImg.onerror = () => r();
+        cleanImg.src = imageSrc;
+      });
+      if ('filter' in ctx) ctx.filter = 'contrast(1.3) brightness(1.05)';
+      ctx.drawImage(cleanImg, 0, 0, targetWidth, targetHeight);
+      return canvas;
+    } catch {
+      return canvas;
+    }
+  }
+}
+
 // Run OCR inside the DOM context using persistent worker
-async function runOCROffscreen(dataUrl: string): Promise<any> {
+async function runOCROffscreen(imageSrc: string): Promise<any> {
   try {
     const worker = await getOCRWorker();
-    const recognizeResult = (await worker.recognize(dataUrl)) as any;
+    const canvas = await prepareCanvasFromSrc(imageSrc);
+    const recognizeResult = (await worker.recognize(canvas)) as any;
     const data = recognizeResult.data;
 
     return {
@@ -62,8 +109,7 @@ async function runOCROffscreen(dataUrl: string): Promise<any> {
         : [],
     };
   } catch (err) {
-    console.warn('[ShieldSight Offscreen OCR] Primary recognition failed, resetting worker session...', err);
-    // Reset worker session on error
+    console.warn('[ShieldSight Offscreen OCR] Recognition attempt failed, resetting worker session...', err);
     if (cachedWorker) {
       try {
         await cachedWorker.terminate();
@@ -78,7 +124,8 @@ async function runOCROffscreen(dataUrl: string): Promise<any> {
 // Listen for OCR messages from background script
 chrome.runtime.onMessage.addListener((message: any, _sender: any, sendResponse: (res: any) => void) => {
   if (message.type === 'RUN_OCR_OFFSCREEN') {
-    runOCROffscreen(message.payload.dataUrl)
+    const src = message.payload.imageSrc || message.payload.dataUrl || '';
+    runOCROffscreen(src)
       .then((res) => {
         sendResponse(res);
       })
