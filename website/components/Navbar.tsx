@@ -45,6 +45,9 @@ export function Navbar() {
             <Link href="/#privacy" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
               Privacy
             </Link>
+            <Link href="/#presentation" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
+              Presentation
+            </Link>
             <Link href="/install" className="text-xs text-slate-400 hover:text-slate-100 transition-colors">
               Install
             </Link>
