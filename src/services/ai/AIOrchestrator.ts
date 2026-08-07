@@ -139,13 +139,17 @@ export class AIOrchestrator implements IImageClassifier {
         textConfidence = toxResult.confidence;
         if (toxResult.isHarmful && toxResult.label !== 'SAFE') {
           textBlocked = true;
+          if (toxResult.label === 'SEXUAL') {
+            nsfwLabel = 'NSFW';
+            nsfwProbability = Math.max(nsfwProbability, textConfidence);
+          }
         }
       } catch (err) {
         console.warn(`[ShieldSight Orchestrator] Toxicity evaluation on OCR text failed for ${image.id}:`, err);
       }
     }
 
-    // 4. Compute overall decision via DecisionEngine (elevating to blocked if image text is toxic)
+    // 4. Compute overall decision via DecisionEngine (elevating to blocked if image text is toxic/NSFW)
     let overallDecision = DecisionEngine.evaluateDecision(nsfwLabel, violenceLabel);
     if (overallDecision === 'SAFE' && textBlocked) {
       overallDecision = 'BOTH';
