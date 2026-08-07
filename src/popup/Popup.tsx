@@ -85,7 +85,7 @@ export const Popup: React.FC = () => {
   return (
     <div className="w-[380px] min-h-[520px] bg-[#0B1220] text-slate-100 font-sans select-none p-5 flex flex-col justify-between">
       <div>
-        {/* Minimal Header */}
+        {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-800/60">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-100 font-bold text-xs">
@@ -98,33 +98,61 @@ export const Popup: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-slate-800 bg-slate-900/60 text-[10px] font-mono text-slate-400">
-            <span className={`w-1.5 h-1.5 rounded-full ${settings.protectionEnabled ? 'bg-emerald-400' : 'bg-slate-500'}`} />
+            <span className={`w-1.5 h-1.5 rounded-full ${settings.protectionEnabled ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`} />
             <span>{settings.protectionEnabled ? 'ACTIVE' : 'PAUSED'}</span>
           </div>
         </div>
 
+        {/* MASTER TURN ON / TURN OFF POWER SWITCH CARD */}
+        <div className="mt-4 p-3.5 rounded-xl bg-[#0D1322] border border-slate-800/60 flex items-center justify-between">
+          <div>
+            <div className="text-xs font-bold text-slate-100 flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full ${settings.protectionEnabled ? 'bg-emerald-400' : 'bg-rose-500'}`} />
+              <span>{settings.protectionEnabled ? 'Protection Active' : 'Protection Disabled'}</span>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-0.5">
+              {settings.protectionEnabled ? 'Real-time AI moderation ON' : 'Click toggle to turn ON protection'}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => handleToggleProtection(!settings.protectionEnabled)}
+            className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-200 ease-in-out cursor-pointer ${
+              settings.protectionEnabled ? 'bg-emerald-500' : 'bg-slate-700'
+            }`}
+            aria-label="Toggle Protection ON/OFF"
+          >
+            <div
+              className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-200 ease-in-out ${
+                settings.protectionEnabled ? 'translate-x-6' : 'translate-x-0'
+              }`}
+            />
+          </button>
+        </div>
+
         {!showAdvanced ? (
           /* ================= MAIN MINIMALIST VIEW ================= */
-          <div className="mt-4 space-y-3.5">
+          <div className="mt-3.5 space-y-3.5">
             {/* Protection Summary List */}
             <div className="p-3.5 rounded-xl bg-[#0D1322] border border-slate-800/60 space-y-2">
               <div className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">Protection Status</div>
               <div className="grid grid-cols-2 gap-2 text-xs text-slate-300">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-400 font-bold">✓</span>
-                  <span>Adult Content</span>
+                  <span className={settings.protectionEnabled ? 'text-emerald-400 font-bold' : 'text-slate-500'}>✓</span>
+                  <span className={settings.protectionEnabled ? 'text-slate-200' : 'text-slate-500'}>Adult Content</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-400 font-bold">✓</span>
-                  <span>Graphic Violence</span>
+                  <span className={settings.protectionEnabled ? 'text-emerald-400 font-bold' : 'text-slate-500'}>✓</span>
+                  <span className={settings.protectionEnabled ? 'text-slate-200' : 'text-slate-500'}>Graphic Violence</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-400 font-bold">✓</span>
-                  <span>Harmful Language</span>
+                  <span className={settings.protectionEnabled ? 'text-emerald-400 font-bold' : 'text-slate-500'}>✓</span>
+                  <span className={settings.protectionEnabled ? 'text-slate-200' : 'text-slate-500'}>Harmful Language</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-400 font-bold">✓</span>
-                  <span>OCR Text</span>
+                  <span className={settings.protectionEnabled ? 'text-emerald-400 font-bold' : 'text-slate-500'}>✓</span>
+                  <span className={settings.protectionEnabled ? 'text-slate-200' : 'text-slate-500'}>OCR Text</span>
                 </div>
               </div>
             </div>
@@ -141,8 +169,11 @@ export const Popup: React.FC = () => {
                       key={lvl}
                       type="button"
                       onClick={() => handleSelectLevel(lvl)}
+                      disabled={!settings.protectionEnabled}
                       className={`flex-1 py-1.5 text-[10px] font-semibold rounded transition-colors ${
-                        active
+                        !settings.protectionEnabled
+                          ? 'text-slate-600 cursor-not-allowed'
+                          : active
                           ? 'bg-slate-800 text-slate-100 border border-slate-700'
                           : 'text-slate-400 hover:text-slate-200'
                       }`}
@@ -186,7 +217,7 @@ export const Popup: React.FC = () => {
           </div>
         ) : (
           /* ================= ADVANCED CUSTOMIZATION VIEW ================= */
-          <div className="mt-4 space-y-3.5">
+          <div className="mt-3.5 space-y-3.5">
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -199,113 +230,136 @@ export const Popup: React.FC = () => {
               <span className="text-xs font-semibold text-slate-300">Policy Customization</span>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#0D1322] border border-slate-800/60 space-y-3 text-xs">
-              <div className="space-y-2">
-                <label className="flex items-center justify-between cursor-pointer">
-                  <span className="text-slate-300">Adult Content Detection</span>
-                  <input
-                    type="checkbox"
-                    checked={settings.nsfwEnabled}
-                    onChange={(e) => handleToggleNsfw(e.target.checked)}
-                    className="rounded bg-slate-900 border-slate-800 text-slate-100 focus:ring-0 w-3.5 h-3.5"
-                  />
-                </label>
-                <label className="flex items-center justify-between cursor-pointer">
-                  <span className="text-slate-300">Violence Detection</span>
-                  <input
-                    type="checkbox"
-                    checked={settings.violenceEnabled}
-                    onChange={(e) => handleToggleViolence(e.target.checked)}
-                    className="rounded bg-slate-900 border-slate-800 text-slate-100 focus:ring-0 w-3.5 h-3.5"
-                  />
-                </label>
-              </div>
-
-              <div className="h-px bg-slate-800/60" />
-
-              <div className="space-y-2">
+            {/* Category Switches */}
+            <div className="p-3.5 rounded-xl bg-[#0D1322] border border-slate-800/60 space-y-3">
+              <div className="flex items-center justify-between">
                 <div>
-                  <span className="block text-[10px] text-slate-400 font-semibold uppercase mb-1">Adult Sensitivity</span>
-                  <div className="flex p-0.5 rounded bg-slate-900 border border-slate-800">
-                    {(['low', 'medium', 'high'] as SensitivityLevel[]).map((lvl) => (
-                      <button
-                        key={lvl}
-                        type="button"
-                        onClick={() => handleChangeNsfwSensitivity(lvl)}
-                        className={`flex-1 py-1 text-[10px] rounded capitalize ${settings.nsfwSensitivity === lvl ? 'bg-slate-800 text-slate-100 font-semibold' : 'text-slate-400'}`}
-                      >
-                        {lvl}
-                      </button>
-                    ))}
-                  </div>
+                  <div className="text-xs font-semibold text-slate-200">Adult Content Detection</div>
+                  <div className="text-[10px] text-slate-400">Filter explicit images & text</div>
                 </div>
-
-                <div>
-                  <span className="block text-[10px] text-slate-400 font-semibold uppercase mb-1">Violence Sensitivity</span>
-                  <div className="flex p-0.5 rounded bg-slate-900 border border-slate-800">
-                    {(['low', 'medium', 'high'] as SensitivityLevel[]).map((lvl) => (
-                      <button
-                        key={lvl}
-                        type="button"
-                        onClick={() => handleChangeViolenceSensitivity(lvl)}
-                        className={`flex-1 py-1 text-[10px] rounded capitalize ${settings.violenceSensitivity === lvl ? 'bg-slate-800 text-slate-100 font-semibold' : 'text-slate-400'}`}
-                      >
-                        {lvl}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-2">
                 <button
                   type="button"
-                  onClick={handleResetStats}
-                  className="w-full py-1.5 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 text-[10px] font-semibold transition-colors"
+                  onClick={() => handleToggleNsfw(!settings.nsfwEnabled)}
+                  className={`w-9 h-5 flex items-center rounded-full p-0.5 transition-colors ${
+                    settings.nsfwEnabled ? 'bg-emerald-500' : 'bg-slate-700'
+                  }`}
                 >
-                  Reset Statistics
+                  <div
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
+                      settings.nsfwEnabled ? 'translate-x-4' : 'translate-x-0'
+                    }`}
+                  />
                 </button>
               </div>
+
+              <div className="flex items-center justify-between border-t border-slate-800/40 pt-3">
+                <div>
+                  <div className="text-xs font-semibold text-slate-200">Violence & Graphic Media</div>
+                  <div className="text-[10px] text-slate-400">Filter violent images & harassment</div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleToggleViolence(!settings.violenceEnabled)}
+                  className={`w-9 h-5 flex items-center rounded-full p-0.5 transition-colors ${
+                    settings.violenceEnabled ? 'bg-emerald-500' : 'bg-slate-700'
+                  }`}
+                >
+                  <div
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${
+                      settings.violenceEnabled ? 'translate-x-4' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+
+            {/* Sensitivity Controls */}
+            <div className="p-3.5 rounded-xl bg-[#0D1322] border border-slate-800/60 space-y-3">
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-xs">
+                  <span className="font-semibold text-slate-300">Adult Content Sensitivity</span>
+                  <span className="font-mono text-[10px] uppercase text-emerald-400">{settings.nsfwSensitivity}</span>
+                </div>
+                <div className="flex gap-1.5">
+                  {(['low', 'medium', 'high'] as SensitivityLevel[]).map((lvl) => (
+                    <button
+                      key={lvl}
+                      type="button"
+                      onClick={() => handleChangeNsfwSensitivity(lvl)}
+                      className={`flex-1 py-1 text-[10px] font-semibold rounded border transition-colors ${
+                        settings.nsfwSensitivity === lvl
+                          ? 'bg-slate-800 text-slate-100 border border-slate-700'
+                          : 'bg-slate-900/40 border-slate-800 text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      {lvl.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-1.5 border-t border-slate-800/40 pt-3">
+                <div className="flex justify-between text-xs">
+                  <span className="font-semibold text-slate-300">Violence Sensitivity</span>
+                  <span className="font-mono text-[10px] uppercase text-emerald-400">{settings.violenceSensitivity}</span>
+                </div>
+                <div className="flex gap-1.5">
+                  {(['low', 'medium', 'high'] as SensitivityLevel[]).map((lvl) => (
+                    <button
+                      key={lvl}
+                      type="button"
+                      onClick={() => handleChangeViolenceSensitivity(lvl)}
+                      className={`flex-1 py-1 text-[10px] font-semibold rounded border transition-colors ${
+                        settings.violenceSensitivity === lvl
+                          ? 'bg-slate-800 text-slate-100 border border-slate-700'
+                          : 'bg-slate-900/40 border-slate-800 text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      {lvl.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Reset Stats */}
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={handleResetStats}
+                className="w-full py-1.5 rounded-lg border border-slate-800 bg-slate-900/40 text-slate-400 hover:text-slate-200 text-xs font-semibold transition-colors"
+              >
+                Reset Protection Statistics
+              </button>
             </div>
           </div>
         )}
       </div>
 
-      {/* Action Footer */}
-      <div className="mt-4 flex gap-2 pt-3 border-t border-slate-800/60">
-        <button
-          type="button"
-          onClick={() => handleToggleProtection(!settings.protectionEnabled)}
-          className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all border ${
-            settings.protectionEnabled
-              ? 'bg-rose-950/20 hover:bg-rose-950/40 border-rose-900/30 text-rose-300'
-              : 'bg-emerald-950/20 hover:bg-emerald-950/40 border-emerald-900/30 text-emerald-300'
-          }`}
-        >
-          {settings.protectionEnabled ? 'Pause Protection' : 'Resume Protection'}
-        </button>
-
+      {/* Footer Navigation */}
+      <div className="pt-4 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400">
         {!showAdvanced ? (
           <button
             type="button"
             onClick={() => setShowAdvanced(true)}
-            className="flex-1 py-2 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-semibold transition-colors"
+            className="hover:text-slate-200 transition-colors font-semibold"
           >
-            Settings
+            Policy Settings →
           </button>
         ) : (
-          <button
-            type="button"
-            onClick={() => setIsAboutOpen(true)}
-            className="flex-1 py-2 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-semibold transition-colors"
-          >
-            Info
-          </button>
+          <span />
         )}
+        <button
+          type="button"
+          onClick={() => setIsAboutOpen(true)}
+          className="hover:text-slate-200 transition-colors font-semibold"
+        >
+          About ShieldSight
+        </button>
       </div>
 
+      {/* About Modal */}
       <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );
 };
-export default Popup;
