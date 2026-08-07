@@ -1,0 +1,38 @@
+===================================================================
+SHIELDSIGHT AI — ACADEMIC DEMONSTRATION & TESTING SAMPLE DATA
+===================================================================
+Purpose: Test file for demonstrating real-time text moderation, 
+toxicity detection, and inline safety redaction during college presentation.
+===================================================================
+
+[SECTION 1: SAFE BASELINE TEXT (Should NOT be flagged)]
+-------------------------------------------------------------------
+1. Welcome to ShieldSight AI! Protecting online interactions for everyone.
+2. Artificial intelligence models can run efficiently inside web browsers.
+3. Today we are presenting our final year computer science project.
+4. Have a wonderful day and enjoy learning about web security!
+
+-------------------------------------------------------------------
+[SECTION 2: MILD CYBERBULLYING & TOXICITY SAMPLES (For Flagging Demo)]
+-------------------------------------------------------------------
+1. You are completely useless and nobody wants to work with you on this project.
+2. Stop posting here, your ideas are stupid and nobody cares about your opinion.
+3. You are so annoying and ignorant, get out of this chat group immediately.
+4. Everyone in this team hates working with you because you are a loser.
+5. Shut up, you don't know anything about programming or web development.
+
+-------------------------------------------------------------------
+[SECTION 3: HARASSMENT & THREAT TEST SAMPLES (For Redaction Badge Demo)]
+-------------------------------------------------------------------
+1. I am going to ruin your reputation and make sure you fail this entire course.
+2. Get lost, nobody asked for your input and you don't belong here.
+3. You are a terrible person and you should feel ashamed of yourself.
+4. We are going to spam your profile until you delete your account.
+
+===================================================================
+HOW TO USE FOR COLLEGE DEMO:
+1. Open any webpage or test input form in Chrome with ShieldSight AI active.
+2. Copy and paste text from Section 2 or Section 3 into a comment box or chat field.
+3. Show your professor how ShieldSight AI immediately redacts toxic text 
+   and displays the minimalist "Content Hidden - Safety Badge" in real time!
+===================================================================
