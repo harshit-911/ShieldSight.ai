@@ -54,7 +54,6 @@ export class ImagePreprocessor {
       if (typeof createImageBitmap !== 'undefined') {
         const bitmap = await createImageBitmap(blob);
         
-        // 3. Draw onto OffscreenCanvas or HTMLCanvasElement
         let data: Uint8ClampedArray | null = null;
 
         if (typeof OffscreenCanvas !== 'undefined') {
@@ -75,7 +74,6 @@ export class ImagePreprocessor {
           }
         }
 
-        // Close bitmap resource memory
         if (typeof bitmap.close === 'function') {
           bitmap.close();
         }
@@ -87,7 +85,6 @@ export class ImagePreprocessor {
             const g = data[i + 1];
             const b = data[i + 2];
 
-            // BGR Order + Mean Subtraction
             tensorData[tensorIdx] = b - bMean;
             tensorData[tensorIdx + 1] = g - gMean;
             tensorData[tensorIdx + 2] = r - rMean;
@@ -102,7 +99,6 @@ export class ImagePreprocessor {
       throw new Error(`[ShieldSight Security] Cross-origin fetch failed for image: ${errorMsg}`);
     }
 
-    // Fallback for headless environments without createImageBitmap
     tensorData.fill(0.0);
     return tensorData;
   }
