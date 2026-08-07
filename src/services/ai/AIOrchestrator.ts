@@ -22,6 +22,7 @@ import {
 import { pipelineAuditTracker } from '../audit/PipelineAuditTracker';
 import { ocrService } from '../ocr/OCRService';
 import { toxicityClassifier } from './ToxicityClassifier';
+import { textNormalizationEngine } from '../normalization/TextNormalizationEngine';
 import { ToxicityLabel } from '../../types/text';
 
 export class AIOrchestrator implements IImageClassifier {
@@ -129,9 +130,12 @@ export class AIOrchestrator implements IImageClassifier {
 
     if (ocrText && ocrText.length >= 2) {
       try {
+        const normResult = textNormalizationEngine.process(ocrText);
+        const evalText = `${ocrText} ${normResult.normalizedText}`;
+
         const toxResult = await toxicityClassifier.classify({
           id: `ocr-text-${image.id}`,
-          text: ocrText,
+          text: evalText,
           element: image.element,
           timestamp: Date.now(),
         });

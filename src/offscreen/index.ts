@@ -1,43 +1,76 @@
 /**
  * ShieldSight AI - Offscreen Document Task Processor
  * Runs Tesseract.js OCR inside a real DOM window context to bypass MV3 Service Worker limitations.
+ * Uses a persistent cached Singleton Worker session to eliminate WASM re-initialization overhead.
  */
 
-import { createWorker } from 'tesseract.js';
+import { createWorker, Worker } from 'tesseract.js';
 
 console.log('[ShieldSight Offscreen] Offscreen Document initialized');
 
-// Run OCR inside the DOM context
+let cachedWorker: Worker | null = null;
+let workerPromise: Promise<Worker> | null = null;
+
+/**
+ * Lazily initializes and caches a single persistent Tesseract WASM worker.
+ */
+async function getOCRWorker(): Promise<Worker> {
+  if (cachedWorker) {
+    return cachedWorker;
+  }
+
+  if (!workerPromise) {
+    workerPromise = (async () => {
+      const langPath = chrome.runtime.getURL('tessdata');
+      const workerPath = chrome.runtime.getURL('lib/tesseract/worker.min.js');
+      const corePath = chrome.runtime.getURL('lib/tesseract/tesseract-core.wasm.js');
+
+      console.log(`[ShieldSight Offscreen OCR] Initializing Persistent Tesseract WASM Worker: langPath=${langPath}`);
+
+      const worker = await createWorker('eng', 1, {
+        langPath,
+        workerPath,
+        corePath,
+        cacheMethod: 'none',
+      });
+
+      cachedWorker = worker;
+      console.log('[ShieldSight Offscreen OCR] Persistent Tesseract WASM Worker Initialized Successfully');
+      return worker;
+    })();
+  }
+
+  return workerPromise;
+}
+
+// Run OCR inside the DOM context using persistent worker
 async function runOCROffscreen(dataUrl: string): Promise<any> {
-  const langPath = chrome.runtime.getURL('tessdata');
-  const workerPath = chrome.runtime.getURL('lib/tesseract/worker.min.js');
-  const corePath = chrome.runtime.getURL('lib/tesseract/tesseract-core.wasm.js');
-
-  console.log(`[ShieldSight Offscreen OCR] Running OCR with local assets: langPath=${langPath}, workerPath=${workerPath}, corePath=${corePath}`);
-
-  const worker = await createWorker('eng', 1, {
-    langPath,
-    workerPath,
-    corePath,
-    cacheMethod: 'none',
-  });
-
   try {
-    const recognizeResult = await worker.recognize(dataUrl) as any;
+    const worker = await getOCRWorker();
+    const recognizeResult = (await worker.recognize(dataUrl)) as any;
     const data = recognizeResult.data;
-    await worker.terminate();
 
     return {
-      text: data.text,
-      confidence: data.confidence,
-      words: data.words ? data.words.map((w: any) => ({
-        text: w.text,
-        confidence: w.confidence,
-        bbox: w.bbox,
-      })) : [],
+      text: data.text || '',
+      confidence: data.confidence || 0,
+      words: data.words
+        ? data.words.map((w: any) => ({
+            text: w.text,
+            confidence: w.confidence,
+            bbox: w.bbox,
+          }))
+        : [],
     };
   } catch (err) {
-    await worker.terminate();
+    console.warn('[ShieldSight Offscreen OCR] Primary recognition failed, resetting worker session...', err);
+    // Reset worker session on error
+    if (cachedWorker) {
+      try {
+        await cachedWorker.terminate();
+      } catch {}
+      cachedWorker = null;
+      workerPromise = null;
+    }
     throw err;
   }
 }
