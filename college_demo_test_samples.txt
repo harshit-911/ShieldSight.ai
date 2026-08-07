@@ -1,0 +1,51 @@
+===============================================================================
+              SHIELDSIGHT AI — ACADEMIC DEMONSTRATION TEST SAMPLES
+===============================================================================
+Purpose: Academic demonstration sample sentences for college project viva,
+lab evaluation, and professor demonstrations.
+Note: All test samples are educational and non-explicit to strictly satisfy
+academic ethics guidelines while demonstrating real-time AI moderation capabilities.
+
+-------------------------------------------------------------------------------
+1. SAFE BASELINE TEST SENTENCES (Control Group - Should Remain 100% Visible)
+-------------------------------------------------------------------------------
+[SAFE-01] Artificial Intelligence and Machine Learning are transforming modern educational platforms.
+[SAFE-02] Cybersecurity and on-device data privacy are fundamental human rights in the digital era.
+[SAFE-03] The final year computer science project defense is scheduled for tomorrow morning.
+[SAFE-04] ShieldSight AI processes neural networks 100% locally inside the Chrome browser.
+[SAFE-05] Our team built a privacy-preserving content moderation extension for families.
+
+-------------------------------------------------------------------------------
+2. ENGLISH CYBERBULLYING & HARASSMENT TEST SENTENCES (Triggers Redaction & Blur)
+-------------------------------------------------------------------------------
+[TEST-EN-01] You are completely useless, annoying, and a total loser in this team project.
+[TEST-EN-02] Shut up, nobody cares about your terrible opinion here.
+[TEST-EN-03] You are stupid, ignorant, and you fail at everything you do.
+[TEST-EN-04] Get lost, you are an idiot and nobody wants you around.
+[TEST-EN-05] Stop talking trash, your work is terrible and worthless.
+
+-------------------------------------------------------------------------------
+3. ROMANIZED HINGLISH TEST SENTENCES (Regional Language Moderation)
+-------------------------------------------------------------------------------
+[TEST-HI-01] Tum ekdum gadhay ho aur tumhara dimag bilkul bakwas hai.
+[TEST-HI-02] Bakwas band karo aur chup chaap yahan se chale jao.
+[TEST-HI-03] Tumhe kuch nahi aata, tum ekdum kamine ho.
+[TEST-HI-04] Yeh banda ekdum useless aur harami harkatein karta hai.
+[TEST-HI-05] Saale chup ho jaa aur apna faltu kaam band kar.
+
+-------------------------------------------------------------------------------
+4. DEVANAGARI HINDI SCRIPT TEST SENTENCES (हिंदी - Native Script Moderation)
+-------------------------------------------------------------------------------
+[TEST-DEV-01] तुम बहुत ही गधे और बकवास इंसान हो।
+[TEST-DEV-02] अपना काम करो और बिना वजह बकवास मत करो।
+[TEST-DEV-03] तुम एक नंबर के कमीने इंसान हो।
+[TEST-DEV-04] फालतू बातें बंद करो और चुपचाप बैठो।
+[TEST-DEV-05] साले गधे, तुम्हें कुछ समझ नहीं आता।
+
+-------------------------------------------------------------------------------
+5. HOW TO DEMONSTRATE TO YOUR PROFESSOR (3-STEP VIVA DEMO PROCEDURE)
+-------------------------------------------------------------------------------
+Step 1: Open Chrome and ensure the ShieldSight AI extension is active (🟢 Green dot).
+Step 2: Copy any line from Section 2, 3, or 4 above and paste it into any web page input box, comment field, or test page.
+Step 3: Watch ShieldSight AI instantly blur the toxic text and display the interactive 🛡️ "Sensitive Language Hidden" safety badge with the 1-click "Reveal" option!
+===============================================================================
