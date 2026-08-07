@@ -13,7 +13,7 @@ toxicity detection, and inline safety redaction during college presentation.
 4. Have a wonderful day and enjoy learning about web security!
 
 -------------------------------------------------------------------
-[SECTION 2: MILD CYBERBULLYING & TOXICITY SAMPLES (For Flagging Demo)]
+[SECTION 2: MILD CYBERBULLYING & TOXICITY SAMPLES (English)]
 -------------------------------------------------------------------
 1. You are completely useless and nobody wants to work with you on this project.
 2. Stop posting here, your ideas are stupid and nobody cares about your opinion.
@@ -22,17 +22,27 @@ toxicity detection, and inline safety redaction during college presentation.
 5. Shut up, you don't know anything about programming or web development.
 
 -------------------------------------------------------------------
-[SECTION 3: HARASSMENT & THREAT TEST SAMPLES (For Redaction Badge Demo)]
+[SECTION 3: HINDI & HINGLISH ABUSIVE TEST SAMPLES (Romanized & Devanagari Script)]
+-------------------------------------------------------------------
+1. Tu ek number ka chutiya hai aur tera project ekdum bakwaas hai.
+2. Tu bilkul gadha hai, saale tumse ek simple program bhi nahi banta.
+3. Bakwaas mat kar, chup chaap yaha se nikal ja harami.
+4. तुम बिल्कुल गधे हो, तुमसे एक सिंपल प्रोग्राम भी नहीं बनता।
+5. चुपचाप यहाँ से निकल जा कमीने, दोबारा मत दिखना।
+6. Tu behenchod aur madarchod hai, tujhe toh main maar dunga.
+
+-------------------------------------------------------------------
+[SECTION 4: HARASSMENT & THREAT TEST SAMPLES]
 -------------------------------------------------------------------
 1. I am going to ruin your reputation and make sure you fail this entire course.
 2. Get lost, nobody asked for your input and you don't belong here.
 3. You are a terrible person and you should feel ashamed of yourself.
-4. We are going to spam your profile until you delete your account.
+4. Jaan se maar dunga agar dobara yahan dikha toh.
 
 ===================================================================
 HOW TO USE FOR COLLEGE DEMO:
 1. Open any webpage or test input form in Chrome with ShieldSight AI active.
-2. Copy and paste text from Section 2 or Section 3 into a comment box or chat field.
-3. Show your professor how ShieldSight AI immediately redacts toxic text 
-   and displays the minimalist "Content Hidden - Safety Badge" in real time!
+2. Copy and paste text from Section 2, 3, or 4 into a webpage text block or comment field.
+3. Show your professor how ShieldSight AI immediately redacts toxic Hindi, 
+   Hinglish, and English text and displays the minimalist "Sensitive Language Hidden" badge!
 ===================================================================
