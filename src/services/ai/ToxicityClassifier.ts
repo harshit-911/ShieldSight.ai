@@ -52,10 +52,10 @@ export class ToxicityClassifier implements TextClassifier {
     };
 
     // Keyword & Semantic Pattern Heuristics (English + Hinglish / Romanized Hindi inflections)
-    const threatRegex = /\b(kill|murder|slaughter|die|dying|dead|stab|shoot|shot|bomb|attack|execute|maar dunga|maar dalunga|jaan se maar|thok dunga)[a-z]*\b/i;
+    const threatRegex = /\b(kill|murder|slaughter|die|dying|dead|stab|shoot|shot|bomb|attack|execute|ruin|spam|maar dunga|maar dalunga|jaan se maar|thok dunga)[a-z]*\b/i;
     const hateRegex = /\b(nigger|nigga|faggot|retard|chink|kike|spic|racist|supremacist|chakka|meetha)[a-z]*\b/i;
     const sexualRegex = /\b(porn|pornography|sex|sexual|erotic|orgasm|explicit|cum|intercourse|penis|lauda|loda|laund|lodu|choot|bhosada)[a-z]*\b/i;
-    const harassmentRegex = /\b(harass|stalk|dox|ugly|worthless|idiot|stupid|trash|randi|raandi)[a-z]*\b/i;
+    const harassmentRegex = /\b(harass|stalk|dox|ugly|worthless|useless|idiot|stupid|trash|annoying|ignorant|loser|hates?|shut up|get lost|terrible|ashamed|fail|randi|raandi)[a-z]*\b/i;
     const abusiveRegex = /\b(bitch|bastard|asshole|fuck|motherfuck|shit|cunt|dick|chutiya|madarchod|behenchod|bhenchod|bhosdike|bhosdi|bsdk|mc|bc|mchd|bchd|harami|kamina|saala|sale|teri maa ki)[a-z]*\b/i;
     const groomingRegex = /\b(meet me|secret|don't tell|send (pics?|photos?)|how old (are you|r u))\b/i;
 
