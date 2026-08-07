@@ -1,13 +1,15 @@
 /**
  * ShieldSight AI - Text Discovery Service
- * Scans the DOM for visible text elements (<p>, <span>, <h1>-<h6>, <blockquote>, etc.)
- * Ignores <script>, <style>, <nav>, <header>, <footer>, hidden elements, and HTML attributes.
- * Listens for dynamic text additions via MutationObserver.
+ * Scans the DOM for visible text elements (<p>, <span>, <div>, <h1>-<h6>, <li>, <td>, <a>, <label>, etc.)
+ * Monitors dynamic SPA text additions & text content updates via MutationObserver (all subframes & dynamic nodes).
+ * Ignores <script>, <style>, <noscript>, <svg>, <canvas>, <select>, <option> elements.
  */
 
 import { DiscoveredTextBlock } from '../../types/text';
 
 type TextDiscoveryListener = (discoveredBlock: DiscoveredTextBlock) => void;
+
+const TARGET_TEXT_SELECTOR = 'p, span, div, h1, h2, h3, h4, h5, h6, blockquote, li, td, th, a, label, b, i, em, strong, mark, small, article, section, figcaption, summary';
 
 export class TextDiscoveryService {
   private discoveredElements: WeakSet<HTMLElement> = new WeakSet();
@@ -23,10 +25,6 @@ export class TextDiscoveryService {
     'SVG',
     'CANVAS',
     'IFRAME',
-    'NAV',
-    'HEADER',
-    'FOOTER',
-    'BUTTON',
     'INPUT',
     'TEXTAREA',
     'SELECT',
@@ -39,7 +37,7 @@ export class TextDiscoveryService {
   start(): void {
     if (this.isRunning) return;
     this.isRunning = true;
-    console.log('[ShieldSight Text Discovery] Service Started');
+    console.log('[ShieldSight Text Discovery] Service Started (Global Browser DOM Monitor Active)');
 
     this.scanDocument();
     this.setupMutationObserver();
@@ -68,14 +66,12 @@ export class TextDiscoveryService {
   }
 
   /**
-   * Performs complete scan of visible text elements on the current page.
+   * Performs complete scan of visible text elements on the current page/frame.
    */
   scanDocument(): void {
     if (!this.isRunning) return;
 
-    const candidates = Array.from(
-      document.querySelectorAll('p, span, h1, h2, h3, h4, h5, h6, blockquote, li, td, article, figcaption')
-    );
+    const candidates = Array.from(document.querySelectorAll(TARGET_TEXT_SELECTOR));
 
     candidates.forEach((el) => {
       if (el instanceof HTMLElement) {
@@ -92,7 +88,7 @@ export class TextDiscoveryService {
     if (this.isIgnoredElement(el)) return;
     if (!this.isElementVisible(el)) return;
 
-    // Extract direct text content (avoid duplicating child text blocks)
+    // Extract text content from node
     const textContent = this.extractDirectText(el);
     if (!textContent || textContent.length < 2) return;
 
@@ -130,11 +126,11 @@ export class TextDiscoveryService {
   }
 
   /**
-   * Checks whether element tag is ignored (script, style, nav, inputs, attributes).
+   * Checks whether element tag is ignored.
    */
   private isIgnoredElement(el: HTMLElement): boolean {
     if (this.IGNORED_TAGS.has(el.tagName.toUpperCase())) return true;
-    if (el.closest('nav, header, footer, script, style, svg')) return true;
+    if (el.closest('script, style, svg, noscript, nav')) return true;
     return false;
   }
 
@@ -153,7 +149,7 @@ export class TextDiscoveryService {
   }
 
   /**
-   * Sets up MutationObserver to detect dynamically inserted text blocks.
+   * Sets up MutationObserver to detect dynamically inserted text blocks and live text updates.
    */
   private setupMutationObserver(): void {
     if (typeof MutationObserver === 'undefined') return;
@@ -162,31 +158,38 @@ export class TextDiscoveryService {
       if (!this.isRunning) return;
 
       mutations.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            const el = node as HTMLElement;
-            if (this.isIgnoredElement(el)) return;
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              const el = node as HTMLElement;
+              if (this.isIgnoredElement(el)) return;
 
-            if (el.matches('p, span, h1, h2, h3, h4, h5, h6, blockquote, li, td, article, figcaption')) {
-              this.processElement(el);
-            }
-
-            const children = Array.from(
-              el.querySelectorAll('p, span, h1, h2, h3, h4, h5, h6, blockquote, li, td, article, figcaption')
-            );
-            children.forEach((child) => {
-              if (child instanceof HTMLElement) {
-                this.processElement(child);
+              if (el.matches(TARGET_TEXT_SELECTOR)) {
+                this.processElement(el);
               }
-            });
+
+              const children = Array.from(el.querySelectorAll(TARGET_TEXT_SELECTOR));
+              children.forEach((child) => {
+                if (child instanceof HTMLElement) {
+                  this.processElement(child);
+                }
+              });
+            }
+          });
+        } else if (mutation.type === 'characterData') {
+          const parent = mutation.target.parentElement;
+          if (parent && parent instanceof HTMLElement) {
+            this.discoveredElements.delete(parent);
+            this.processElement(parent);
           }
-        });
+        }
       });
     });
 
-    this.observer.observe(document.body, {
+    this.observer.observe(document.body || document.documentElement, {
       childList: true,
       subtree: true,
+      characterData: true,
     });
   }
 
