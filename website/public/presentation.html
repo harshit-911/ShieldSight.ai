@@ -979,7 +979,8 @@
 
     // Generate dot navigation
     slides.forEach((_, idx) => {
-      const dot.classList.add('dot');
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
       if (idx === 0) dot.classList.add('active');
       dot.addEventListener('click', () => goToSlide(idx));
       dotNav.appendChild(dot);
