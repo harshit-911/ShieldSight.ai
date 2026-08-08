@@ -600,54 +600,51 @@
       </div>
     </div>
 
-    <!-- SLIDE 4: SECTION 2 - RELATED WORKS & COMPARISON -->
+    <!-- SLIDE 4: SECTION 2 - RELATED WORKS (SIMPLIFIED LAYMAN COMPARISON) -->
     <div class="slide">
-      <div class="section-badge">2. RELATED WORKS & COMPARATIVE ANALYSIS</div>
-      <h2 class="slide-title">Existing Studies & Solution Comparison</h2>
-      <p class="slide-subtitle">Analyzing earlier proposals and commercial tools versus our proposed on-device multimodal architecture.</p>
+      <div class="section-badge">2. RELATED WORKS & SOLUTION COMPARISON</div>
+      <h2 class="slide-title">How ShieldSight AI Compares to Existing Tools</h2>
+      <p class="slide-subtitle">A simple side-by-side comparison showing why on-device AI is superior to traditional methods.</p>
 
-      <div class="table-container">
-        <table class="academic-table">
-          <thead>
-            <tr>
-              <th>Architecture / Approach</th>
-              <th>Processing Location</th>
-              <th>Privacy Guarantee</th>
-              <th>Average Latency</th>
-              <th>Multimodal Fusion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Cloud API Filters</strong> (Perspective / AWS)</td>
-              <td>Remote Cloud Endpoints</td>
-              <td><span style="color: #F43F5E;">❌ Data Sent Off-Device</span></td>
-              <td>350ms – 1200ms</td>
-              <td>Single Modality (Text or Image)</td>
-            </tr>
-            <tr>
-              <td><strong>DNS Domain Filters</strong> (OpenDNS / Cloudflare)</td>
-              <td>Remote DNS Resolver</td>
-              <td><span style="color: #F43F5E;">❌ Domain Tracking</span></td>
-              <td>50ms – 150ms</td>
-              <td>None (Domain Level Only)</td>
-            </tr>
-            <tr>
-              <td><strong>Rule-Based Extension Filters</strong></td>
-              <td>Local Browser (Regex)</td>
-              <td><span style="color: #10B981;">✓ Local Processing</span></td>
-              <td>~5ms</td>
-              <td>Text Only (No Vision or OCR)</td>
-            </tr>
-            <tr style="background: rgba(16, 185, 129, 0.12); font-weight: 700;">
-              <td><strong>ShieldSight AI (Proposed)</strong></td>
-              <td><strong>100% Local GPU (WebGL)</strong></td>
-              <td><span style="color: #10B981;">✓ Absolute Zero-Data Leak</span></td>
-              <td><span style="color: #10B981;">~26ms (Sub-30ms)</span></td>
-              <td><span style="color: #10B981;">Tri-Modal (Vision + NLP + WASM OCR)</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="grid-3">
+        <!-- Card 1: Cloud Filters -->
+        <div class="card card-highlight-red">
+          <div class="card-title" style="color: #F43F5E; display: flex; align-items: center; gap: 6px;">
+            <span>❌ Cloud API Filters</span>
+          </div>
+          <div style="font-size: 11px; color: #64748B; font-weight: 600; margin-bottom: 12px; text-transform: uppercase;">e.g. Google Perspective API</div>
+          <ul style="font-size: 13px; color: #94A3B8; line-height: 1.7; padding-left: 16px;">
+            <li><strong style="color: #F43F5E;">Privacy Leak:</strong> Sends your private photos & chat logs to external cloud servers.</li>
+            <li><strong style="color: #F43F5E;">Slow Speed:</strong> Takes ~1 second to inspect every page request.</li>
+            <li><strong style="color: #F43F5E;">Costly:</strong> High monthly API subscription fees per user.</li>
+          </ul>
+        </div>
+
+        <!-- Card 2: DNS Website Blockers -->
+        <div class="card card-highlight-red">
+          <div class="card-title" style="color: #F43F5E; display: flex; align-items: center; gap: 6px;">
+            <span>❌ DNS Website Blockers</span>
+          </div>
+          <div style="font-size: 11px; color: #64748B; font-weight: 600; margin-bottom: 12px; text-transform: uppercase;">e.g. OpenDNS / Cloudflare</div>
+          <ul style="font-size: 13px; color: #94A3B8; line-height: 1.7; padding-left: 16px;">
+            <li><strong style="color: #F43F5E;">Over-Blocking:</strong> Blocks entire websites (like blocking all of YouTube for 1 bad video).</li>
+            <li><strong style="color: #F43F5E;">No Image AI:</strong> Cannot inspect text inside images or dynamic live chat streams.</li>
+            <li><strong style="color: #F43F5E;">Easy to Bypass:</strong> Defeated easily using VPNs or custom DNS.</li>
+          </ul>
+        </div>
+
+        <!-- Card 3: ShieldSight AI -->
+        <div class="card card-highlight-green">
+          <div class="card-title" style="color: #10B981; display: flex; align-items: center; gap: 6px;">
+            <span>✅ ShieldSight AI (Proposed)</span>
+          </div>
+          <div style="font-size: 11px; color: #10B981; font-weight: 700; margin-bottom: 12px; text-transform: uppercase;">100% On-Device Multimodal AI</div>
+          <ul style="font-size: 13px; color: #94A3B8; line-height: 1.7; padding-left: 16px;">
+            <li><strong style="color: #10B981;">100% Private:</strong> Everything processes locally on your computer. Zero data sent out.</li>
+            <li><strong style="color: #10B981;">Blazing Fast (~26ms):</strong> Uses your GPU shaders for instant sub-30ms performance.</li>
+            <li><strong style="color: #10B981;">Tri-Modal:</strong> Blurs adult images, toxic text, and meme text in milliseconds.</li>
+          </ul>
+        </div>
       </div>
     </div>
 
