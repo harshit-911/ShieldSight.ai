@@ -358,37 +358,6 @@
       min-width: 90px;
     }
 
-    /* Academic Data Table */
-    .table-container {
-      width: 100%;
-      overflow-x: auto;
-      background: #0D1322;
-      border: 1px solid rgba(30, 41, 59, 0.9);
-      border-radius: 16px;
-      padding: 12px;
-    }
-
-    .academic-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-      color: #CBD5E1;
-      text-align: left;
-    }
-
-    .academic-table th {
-      padding: 10px 14px;
-      background: rgba(30, 41, 59, 0.6);
-      color: #F8FAFC;
-      font-weight: 700;
-      border-bottom: 1px solid rgba(51, 65, 85, 0.8);
-    }
-
-    .academic-table td {
-      padding: 10px 14px;
-      border-bottom: 1px solid rgba(30, 41, 59, 0.8);
-    }
-
     /* Tag Pills */
     .pill-tag {
       display: inline-flex;
@@ -487,7 +456,7 @@
       <div class="brand-title">ShieldSight <span>AI</span></div>
     </div>
     <div class="header-controls">
-      <div class="slide-counter" id="slideCounter">SLIDE 01 / 11</div>
+      <div class="slide-counter" id="slideCounter">SLIDE 01 / 10</div>
       <button class="control-btn" id="fullScreenBtn">Fullscreen [F]</button>
     </div>
   </div>
@@ -600,14 +569,13 @@
       </div>
     </div>
 
-    <!-- SLIDE 4: SECTION 2 - RELATED WORKS (SIMPLIFIED LAYMAN COMPARISON) -->
+    <!-- SLIDE 4: SECTION 2 - RELATED WORKS -->
     <div class="slide">
       <div class="section-badge">2. RELATED WORKS & SOLUTION COMPARISON</div>
       <h2 class="slide-title">How ShieldSight AI Compares to Existing Tools</h2>
       <p class="slide-subtitle">A simple side-by-side comparison showing why on-device AI is superior to traditional methods.</p>
 
       <div class="grid-3">
-        <!-- Card 1: Cloud Filters -->
         <div class="card card-highlight-red">
           <div class="card-title" style="color: #F43F5E; display: flex; align-items: center; gap: 6px;">
             <span>❌ Cloud API Filters</span>
@@ -620,7 +588,6 @@
           </ul>
         </div>
 
-        <!-- Card 2: DNS Website Blockers -->
         <div class="card card-highlight-red">
           <div class="card-title" style="color: #F43F5E; display: flex; align-items: center; gap: 6px;">
             <span>❌ DNS Website Blockers</span>
@@ -633,7 +600,6 @@
           </ul>
         </div>
 
-        <!-- Card 3: ShieldSight AI -->
         <div class="card card-highlight-green">
           <div class="card-title" style="color: #10B981; display: flex; align-items: center; gap: 6px;">
             <span>✅ ShieldSight AI (Proposed)</span>
@@ -753,93 +719,9 @@
       </div>
     </div>
 
-    <!-- SLIDE 8: SECTION 4 - EXPERIMENTAL RESULTS (TABULAR) -->
+    <!-- SLIDE 8: SECTION 4 - EXPERIMENTAL RESULTS (GRAPHICAL) -->
     <div class="slide">
-      <div class="section-badge">4. EXPERIMENTAL RESULTS (TABULAR)</div>
-      <h2 class="slide-title">Quantitative Test & Accuracy Benchmarks</h2>
-      <p class="slide-subtitle">Empirical test results verifying unit coverage, classification confidence, and multilingual precision.</p>
-
-      <div class="grid-2">
-        <div class="table-container">
-          <div style="font-size: 13px; font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">Table 1: Test Suite Verification Summary</div>
-          <table class="academic-table">
-            <thead>
-              <tr>
-                <th>Test Metric</th>
-                <th>Result Value</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Total Vitest Test Files</td>
-                <td><strong>32 Files</strong></td>
-                <td><span style="color: #10B981;">✓ Passed</span></td>
-              </tr>
-              <tr>
-                <td>Total Unit & Integration Tests</td>
-                <td><strong>99 Tests</strong></td>
-                <td><span style="color: #10B981;">✓ Passed</span></td>
-              </tr>
-              <tr>
-                <td>Test Execution Duration</td>
-                <td><strong>2.51 Seconds</strong></td>
-                <td><span style="color: #10B981;">✓ Fast</span></td>
-              </tr>
-              <tr>
-                <td>Failed Test Cases</td>
-                <td><strong>0 Failures</strong></td>
-                <td><span style="color: #10B981;">✓ 100% Pass</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="table-container">
-          <div style="font-size: 13px; font-weight: 700; color: #F8FAFC; margin-bottom: 8px;">Table 2: Multilingual NLP Accuracy Metrics</div>
-          <table class="academic-table">
-            <thead>
-              <tr>
-                <th>Language Category</th>
-                <th>Precision</th>
-                <th>Recall</th>
-                <th>F1-Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>English Harassment</td>
-                <td>96.4%</td>
-                <td>94.2%</td>
-                <td>95.3%</td>
-              </tr>
-              <tr>
-                <td>Romanized Hinglish</td>
-                <td>94.8%</td>
-                <td>92.6%</td>
-                <td>93.7%</td>
-              </tr>
-              <tr>
-                <td>Devanagari Hindi (हिंदी)</td>
-                <td>95.2%</td>
-                <td>93.8%</td>
-                <td>94.5%</td>
-              </tr>
-              <tr>
-                <td>Leetspeak Obfuscations</td>
-                <td>92.1%</td>
-                <td>90.5%</td>
-                <td>91.3%</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 9: SECTION 4 - EXPERIMENTAL RESULTS (GRAPHICAL) -->
-    <div class="slide">
-      <div class="section-badge">4. EXPERIMENTAL RESULTS (GRAPHICAL)</div>
+      <div class="section-badge">4. EXPERIMENTAL RESULTS</div>
       <h2 class="slide-title">Graphical Performance & Latency Charts</h2>
       <p class="slide-subtitle">Balanced visual representation of execution latency, throughput, and memory consumption.</p>
 
@@ -900,7 +782,7 @@
       </div>
     </div>
 
-    <!-- SLIDE 10: SECTION 5 - CONCLUSION AND FUTURE WORK -->
+    <!-- SLIDE 9: SECTION 5 - CONCLUSION AND FUTURE WORK -->
     <div class="slide">
       <div class="section-badge">5. CONCLUSION AND FUTURE WORK</div>
       <h2 class="slide-title">Conclusion & Future Research Directions</h2>
@@ -928,7 +810,7 @@
       </div>
     </div>
 
-    <!-- SLIDE 11: THANK YOU & Q&A -->
+    <!-- SLIDE 10: THANK YOU & Q&A -->
     <div class="slide">
       <div class="section-badge">TECHNICAL SUMMARY</div>
       <h2 class="slide-title" style="text-align: center;">Thank You!</h2>
